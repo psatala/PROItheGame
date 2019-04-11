@@ -3,6 +3,9 @@
 ///Author: Piotr Satala
 
 #pragma once
+
+#include <SDL.h>
+
 #include "RectangularObject.h"
 class Player :
 	public RectangularObject
@@ -17,7 +20,7 @@ public:
 
 	///parametrised constructor
 	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y
-	Player(int x, int y, int h, int w, double xC, double yC) : xConstant(xC), yConstant(yC) { RectangularObject(x, y, h, w); };
+	Player(int x, int y, int h, int w, double xC, double yC) : xConstant(xC), yConstant(yC), RectangularObject(x, y, h, w) {};
 
 	///destructor
 	~Player();
@@ -35,12 +38,13 @@ public:
 	///function responsbile for calculating next position of the object based on previous position and speed
 	void calculateNextPosition();
 
-	
+	///function responsbile for printing the player onto the surface
+	///parameters are: renderer to print the player on
+	void printPlayer(SDL_Renderer* rendererToPrintOn);
+
 	//getters
 	double getXConstant();
 	double getYConstant();
-
-	//operator overloads
-	friend std::ostream& operator<<(std::ostream& os, const Player& player);
+	
 };
 

@@ -14,3 +14,14 @@ Player::Player()
 Player::~Player()
 {
 }
+
+void Player::printPlayer(SDL_Renderer* rendererToPrintOn)
+{
+	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(rendererToPrintOn);
+
+	SDL_Rect playerRect = { xCoordinate, yCoordinate, objectWidth, objectHeight };
+	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
+
+}
