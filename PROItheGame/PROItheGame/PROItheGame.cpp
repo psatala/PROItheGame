@@ -9,7 +9,8 @@ using namespace std;
 
 int main()
 {
-	
+	const double timeBetweenFrames = 20;
+
 	const int SCREEN_HEIGHT = 480;
 	const int SCREEN_WIDTH = 640;
 
@@ -35,10 +36,17 @@ int main()
 			else
 			{
 				//screenSurface = SDL_GetWindowSurface(window);
-				Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, SCREEN_HEIGHT - PLAYER_HEIGHT, PLAYER_HEIGHT, PLAYER_WIDTH, 1, 1);
-				myPlayer.printPlayer(renderer);
-				SDL_RenderPresent(renderer);
-				SDL_Delay(2000);
+				Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, SCREEN_HEIGHT - PLAYER_HEIGHT, PLAYER_HEIGHT, PLAYER_WIDTH, 0.05, 0.00000005);
+				myPlayer.jump();
+				myPlayer.moveRight();
+				for (int i = 0; i < 1000; i++)
+				{
+					myPlayer.calculateNextPosition(timeBetweenFrames);
+					myPlayer.printPlayer(renderer);
+					SDL_RenderPresent(renderer);
+					SDL_Delay(timeBetweenFrames);
+				}
+				
 			}
 			
 		}

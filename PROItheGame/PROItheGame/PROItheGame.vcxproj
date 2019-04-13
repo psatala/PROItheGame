@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractObject.h" />
+    <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RectangularObject.h" />
   </ItemGroup>
