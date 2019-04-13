@@ -16,16 +16,16 @@ public:
 	~RectangularObject();
 
 	///setters
-	void setXCoordinate(double newValue);
-	void setYCoordinate(double newValue);
-	void setObjectHeight(int newValue);
-	void setObjectWidth(int newValue);
+	void setXCoordinate(double newValue) { xCoordinate = newValue; }
+	void setYCoordinate(double newValue) { yCoordinate = newValue; }
+	void setObjectHeight(int newValue) { objectHeight = newValue; }
+	void setObjectWidth(int newValue) { objectWidth = newValue; }
 
 	///getters
-	double getXCoordinate();
-	double getYCoordinate();
-	int getObjectHeight();
-	int getObjectWidth();
+	double getXCoordinate() { return xCoordinate; }
+	double getYCoordinate() { return yCoordinate; }
+	int getObjectHeight() { return objectHeight; }
+	int getObjectWidth() { return objectWidth; }
 
 };
 

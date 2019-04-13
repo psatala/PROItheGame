@@ -18,26 +18,23 @@ Player::~Player()
 
 void Player::jump()
 {
-	playerMomentum.setYAcceleration(2000 * yConstant);
+	playerMomentum.setYVelocity(yConstant);
 }
 
 void Player::moveRight()
 {
-	playerMomentum.setXVeloctity(xConstant);
+	playerMomentum.setXVelocity(xConstant);
 }
 
 void Player::moveLeft()
 {
-	playerMomentum.setXVeloctity(-xConstant);
+	playerMomentum.setXVelocity(-xConstant);
 }
 
 void Player::calculateNextPosition(const double timeDifference)
 {
-	//updating vertical acceleration
-	playerMomentum.setYAcceleration(playerMomentum.getYAcceleration() - playerMomentum.getGForce() * timeDifference);
-
 	//updating vertical velocity
-	playerMomentum.setYVeloctity(playerMomentum.getYVelocity() - playerMomentum.getYAcceleration() * timeDifference);
+	playerMomentum.setYVelocity(playerMomentum.getYVelocity() + playerMomentum.getGForce() * timeDifference);
 
 	//updating vertical position
 	yCoordinate += playerMomentum.getYVelocity() * timeDifference;

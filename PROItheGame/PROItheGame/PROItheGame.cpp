@@ -35,18 +35,31 @@ int main()
 				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError();
 			else
 			{
-				//screenSurface = SDL_GetWindowSurface(window);
-				Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, SCREEN_HEIGHT - PLAYER_HEIGHT, PLAYER_HEIGHT, PLAYER_WIDTH, 0.05, 0.00000005);
+				/*    Playground    */
+				
+				
+				
+
+				Player myPlayer(0, (SCREEN_HEIGHT - PLAYER_HEIGHT), PLAYER_HEIGHT, PLAYER_WIDTH, 0.1, -0.7, 0.001);
 				myPlayer.jump();
 				myPlayer.moveRight();
 				for (int i = 0; i < 1000; i++)
 				{
 					myPlayer.calculateNextPosition(timeBetweenFrames);
 					myPlayer.printPlayer(renderer);
+					if (myPlayer.getYCoordinate() <= (SCREEN_HEIGHT - PLAYER_HEIGHT))
+					{
+						int aa = 0;
+						//do sth
+					}
 					SDL_RenderPresent(renderer);
 					SDL_Delay(timeBetweenFrames);
 				}
-				
+
+
+
+
+				/*    End of playground    */
 			}
 			
 		}

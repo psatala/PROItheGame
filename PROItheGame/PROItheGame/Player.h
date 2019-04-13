@@ -15,6 +15,7 @@ class Player :
 	//Constants for velocity
 	const double xConstant = 0;
 	const double yConstant = 0;
+	const double gravityConstant = 0;
 
 	Momentum playerMomentum;
 
@@ -24,7 +25,7 @@ public:
 
 	///parametrised constructor
 	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y
-	Player(int x, int y, int h, int w, double xC, double yC) : xConstant(xC), yConstant(yC), RectangularObject(x, y, h, w), playerMomentum(yConstant) {};
+	Player(int x, int y, int h, int w, double xC, double yC, double g) : xConstant(xC), yConstant(yC), gravityConstant(g), RectangularObject(x, y, h, w), playerMomentum(gravityConstant) {};
 
 	///destructor
 	~Player();
