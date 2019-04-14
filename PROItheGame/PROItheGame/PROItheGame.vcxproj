@@ -158,12 +158,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractObject.cpp" />
+    <ClCompile Include="BasicFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
     <ClCompile Include="RectangularObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractObject.h" />
+    <ClInclude Include="BasicFunctions.h" />
     <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RectangularObject.h" />

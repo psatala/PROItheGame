@@ -50,6 +50,7 @@ public:
 	///getters
 	double getXConstant() { return xConstant; }
 	double getYConstant() { return yConstant; }
+	Momentum* getPlayerMomentum() { return &playerMomentum; }
 	
 };
 
