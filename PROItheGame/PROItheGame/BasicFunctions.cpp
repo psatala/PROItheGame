@@ -31,7 +31,7 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	return success;
 }
 
-void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const int TIME_BETWEEN_FRAMES)
+void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const unsigned int TIME_BETWEEN_FRAMES)
 {
 	bool quit = false;
 	SDL_Event myEvent;
@@ -39,12 +39,16 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	const double x = 0.5;
 	const double y = -0.7;
 	const double g = 0.001;
+
 	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_HEIGHT, PLAYER_WIDTH, x, y, g);
+	RectangularObstacle firstObstacle((SCREEN_WIDTH - 200) / 2, (SCREEN_HEIGHT - 50) * 3 / 4, 50, 200);
 	
 	
 	Uint32 startTime;
 	Uint32 endTime;
 	Uint32 delta;
+
+
 
 	while (!quit)
 	{
@@ -52,67 +56,47 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		while (SDL_PollEvent(&myEvent) != 0)
 		{
 			if (myEvent.type == SDL_QUIT)
-				quit = true;
-			else if (myEvent.type == SDL_KEYDOWN && myEvent.key.repeat == 0)
-			{
-				switch (myEvent.key.keysym.sym)
-				{
-					case SDLK_w:
-						myPlayer.jump();
-						break;
-					case SDLK_d:
-						myPlayer.moveRight();
-						break;
-					case SDLK_a:
-						myPlayer.moveLeft();
-						break;
-				}
-			}
-			else if (myEvent.type == SDL_KEYUP && myEvent.key.repeat == 0)
-			{
-				switch (myEvent.key.keysym.sym)
-				{
-					case SDLK_d:
-						myPlayer.getPlayerMomentum()->setXVelocity(0);
-						break;
-					case SDLK_a:
-						myPlayer.getPlayerMomentum()->setXVelocity(0);
-						break;
-				}
-			}
+				quit = true;	
 		}
+
+		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+
+		if (currentKeyStates[SDL_SCANCODE_W])
+			myPlayer.jump();
+
+		if (!currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
+			myPlayer.getPlayerMomentum()->setXVelocity(0);
+		else if (currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
+			myPlayer.moveLeft();
+		else if (!currentKeyStates[SDL_SCANCODE_A] && currentKeyStates[SDL_SCANCODE_D])
+			myPlayer.moveRight();
+
+
+		myPlayer.checkCollision(&firstObstacle);
 		myPlayer.calculateNextPosition(TIME_BETWEEN_FRAMES);
-		myPlayer.printPlayer(renderer);
+		
+		
+		clear(renderer);
+		firstObstacle.print(renderer);
+		myPlayer.print(renderer);
+
 		SDL_RenderPresent(renderer);
 
 		endTime = SDL_GetTicks();
 		delta = endTime - startTime;
-		if(delta < TIME_BETWEEN_FRAMES)
+		if (delta < TIME_BETWEEN_FRAMES)
 			SDL_Delay(TIME_BETWEEN_FRAMES - delta);
 	}
 
-	
-	/*    Playground    */
+
+
+}
 
 
 
-
-	//Player myPlayer(0, (SCREEN_HEIGHT - PLAYER_HEIGHT), PLAYER_HEIGHT, PLAYER_WIDTH, 0.1, -0.7, 0.001);
-	/*myPlayer.printPlayer(renderer);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(5000);*/
-	/*myPlayer.jump();
-	myPlayer.moveRight();
-	for (int i = 0; i < 1000; i++)
-	{
-		myPlayer.calculateNextPosition(TIME_BETWEEN_FRAMES);
-		myPlayer.printPlayer(renderer);
-		SDL_RenderPresent(renderer);
-		SDL_Delay(TIME_BETWEEN_FRAMES);
-	}*/
-
-
-
-
-	/*    End of playground    */
+void clear(SDL_Renderer* rendererToPrintOn)
+{
+	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(rendererToPrintOn);
 }

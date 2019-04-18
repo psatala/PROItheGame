@@ -162,6 +162,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
     <ClCompile Include="RectangularObject.cpp" />
+    <ClCompile Include="RectangularObstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractObject.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RectangularObject.h" />
+    <ClInclude Include="RectangularObstacle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

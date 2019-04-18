@@ -34,7 +34,8 @@ void Player::moveLeft()
 void Player::calculateNextPosition(const double timeDifference)
 {
 	//updating vertical velocity
-	playerMomentum.setYVelocity(playerMomentum.getYVelocity() + playerMomentum.getGForce() * timeDifference);
+	if(!contact[DOWN])
+		playerMomentum.setYVelocity(playerMomentum.getYVelocity() + playerMomentum.getGForce() * timeDifference);
 
 	//updating vertical position
 	yCoordinate += playerMomentum.getYVelocity() * timeDifference;
@@ -43,13 +44,63 @@ void Player::calculateNextPosition(const double timeDifference)
 	xCoordinate += playerMomentum.getXVelocity() * timeDifference;
 }
 
-void Player::printPlayer(SDL_Renderer* rendererToPrintOn)
+void Player::print(SDL_Renderer* rendererToPrintOn)
 {
-	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0x00, 0xFF);
-	SDL_RenderClear(rendererToPrintOn);
-
 	SDL_Rect playerRect = { (int)xCoordinate, (int)yCoordinate, objectWidth, objectHeight };
 	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
 
+}
+
+void Player::checkCollision(RectangularObstacle* obstacle)
+{
+	if (contact[UP] = checkCollisionSide(obstacle, UP))
+		getPlayerMomentum()->setYVelocity(0);
+	if (contact[DOWN] = checkCollisionSide(obstacle, DOWN))
+	{
+		getPlayerMomentum()->setYVelocity(0);
+		yCoordinate = obstacle->getYCoordinate() - objectHeight;
+	}
+	if (contact[LEFT] = checkCollisionSide(obstacle, LEFT))
+		getPlayerMomentum()->setXVelocity(0);
+	if (contact[RIGHT] = checkCollisionSide(obstacle, RIGHT))
+		getPlayerMomentum()->setXVelocity(0);
+
+}
+
+bool Player::checkCollisionSide(RectangularObstacle* obstacle, Direction dir)
+{
+	switch (dir)
+	{
+	case UP:
+		return false;
+		break;
+	
+	case DOWN:
+		if (xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth())
+			if (yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate())
+				return true;
+		return false;
+		break;
+	
+	case LEFT:
+		return false;
+		break;
+	
+	case RIGHT:
+		return false;
+		break;
+	}
+	/*if (UP == dir || DOWN == dir)
+	{
+		if (xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth())
+			return true;
+		return false;
+	}
+	else
+	{
+		if (yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight())
+			return true;
+		return false;
+	}*/
 }

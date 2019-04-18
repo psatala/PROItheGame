@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <SDL.h>
-
 #include "RectangularObject.h"
+#include "RectangularObstacle.h"
+#include "BasicFunctions.h"
 #include "Momentum.h"
 
 class Player :
@@ -19,7 +19,19 @@ class Player :
 
 	Momentum playerMomentum;
 
+	///enum indicating direction
+	enum Direction { UP, DOWN, LEFT, RIGHT };
+
+	///contact in each direction
+	bool contact[4] = {0};
+
+	///function responsible for checking if player's top collided with an obstacle
+	///parameters are: obstacle to check, side to check
+	bool checkCollisionSide(RectangularObstacle* obstacle, Direction dir);
+
 public:
+	
+	
 	///default constructor
 	Player();
 
@@ -45,7 +57,13 @@ public:
 
 	///function responsbile for printing the player onto the surface
 	///parameters are: renderer to print the player on
-	void printPlayer(SDL_Renderer* rendererToPrintOn);
+	void print(SDL_Renderer* rendererToPrintOn);
+
+	///function responsible for checking if player collided with an obstacle and reacts accordingly to whatever part hit the obstacle
+	///parameters are: obstacle to check
+	void checkCollision(RectangularObstacle* obstacle);
+
+
 
 	///getters
 	double getXConstant() { return xConstant; }
