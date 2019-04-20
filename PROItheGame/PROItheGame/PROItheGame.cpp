@@ -9,7 +9,8 @@ using namespace std;
 
 int main()
 {
-	const unsigned int TIME_BETWEEN_FRAMES = 20;
+	const double FPS = 60;
+	const double TIME_BETWEEN_FRAMES = 1000 / FPS;
 
 	const int SCREEN_HEIGHT = 480;
 	const int SCREEN_WIDTH = 640;

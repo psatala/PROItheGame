@@ -10,7 +10,6 @@ Player::Player()
 	RectangularObject();
 }
 
-
 Player::~Player()
 {
 
@@ -65,7 +64,11 @@ void Player::calculateNextPosition(const double timeDifference)
 
 void Player::print(SDL_Renderer* rendererToPrintOn)
 {
-	SDL_Rect playerRect = { (int)xCoordinate, (int)yCoordinate, objectWidth, objectHeight };
+	int RENDERER_HEIGHT;
+	int RENDERER_WIDTH;
+	SDL_GetRendererOutputSize(rendererToPrintOn, &RENDERER_WIDTH, &RENDERER_HEIGHT);
+
+	SDL_Rect playerRect = { (RENDERER_WIDTH - PLAYER_WIDTH) / 2, (RENDERER_HEIGHT - PLAYER_HEIGHT) / 2, objectWidth, objectHeight };
 	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
 

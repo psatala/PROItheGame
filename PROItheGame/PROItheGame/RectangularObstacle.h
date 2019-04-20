@@ -1,6 +1,11 @@
 #pragma once
 
 #include "RectangularObject.h"
+#include "Player.h"
+
+
+///forward declaration of Player
+class Player;
 
 class RectangularObstacle :
 	public RectangularObject
@@ -12,7 +17,7 @@ public:
 	///destructor
 	~RectangularObstacle();
 	
-	///function prints the object onto the window
-	void print(SDL_Renderer* rendererToPrintOn);
+	///function prints the object onto the window in relation to the player
+	void print(SDL_Renderer* rendererToPrintOn, Player* myPlayer);
 };
 

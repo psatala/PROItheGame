@@ -7,7 +7,8 @@
 #include "RectangularObstacle.h"
 #include "Momentum.h"
 
-
+///forward declaration of RectangularObstacle
+class RectangularObstacle;
 
 class Player :
 	public RectangularObject
@@ -16,6 +17,9 @@ class Player :
 	const double xConstant = 0;
 	const double yConstant = 0;
 	const double gravityConstant = 0;
+
+	const int PLAYER_HEIGHT = 0;
+	const int PLAYER_WIDTH = 0;
 
 	Momentum playerMomentum;
 
@@ -34,7 +38,15 @@ public:
 
 	///parametrised constructor
 	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y
-	Player(int x, int y, int h, int w, double xC, double yC, double g) : xConstant(xC), yConstant(yC), gravityConstant(g), RectangularObject(x, y, h, w), playerMomentum(gravityConstant) {};
+	Player(int x, int y, int h, int w, double xC, double yC, double g, const int pH, const int pW):
+		xConstant(xC),
+		yConstant(yC),
+		gravityConstant(g),
+		RectangularObject(x, y, h, w),
+		playerMomentum(gravityConstant),
+		PLAYER_HEIGHT(pH),
+		PLAYER_WIDTH(pW)
+	{};
 
 	///destructor
 	~Player();
@@ -70,6 +82,9 @@ public:
 	double getXConstant() { return xConstant; }
 	double getYConstant() { return yConstant; }
 	Momentum* getPlayerMomentum() { return &playerMomentum; }
+	int getPlayerHeight() { return PLAYER_HEIGHT; }
+	int getPlayerWidth() { return PLAYER_WIDTH; }
+
 
 private:
 	

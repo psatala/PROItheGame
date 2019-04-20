@@ -20,7 +20,7 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 		}
 		else
 		{
-			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_PRESENTVSYNC);
 			if (NULL == *renderer)
 			{
 				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError();
@@ -31,18 +31,18 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	return success;
 }
 
-void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const unsigned int TIME_BETWEEN_FRAMES)
+void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const double TIME_BETWEEN_FRAMES)
 {
 	bool quit = false;
 	SDL_Event myEvent;
 
-	const double x = 0.5;
-	const double y = -0.7;
-	const double g = 0.001;
+	const double x = 10 / TIME_BETWEEN_FRAMES;
+	const double y = -14 / TIME_BETWEEN_FRAMES;
+	const double g = 0.4 / (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
 	const int tp = 100;
 	const unsigned int tTime = 1000;
 
-	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_HEIGHT, PLAYER_WIDTH, x, y, g);
+	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_HEIGHT, PLAYER_WIDTH, x, y, g, PLAYER_HEIGHT, PLAYER_WIDTH);
 	RectangularObstacle firstObstacle((SCREEN_WIDTH - 400) / 2, (SCREEN_HEIGHT - 50) * 5 / 8, 50, 400);
 	RectangularObstacle secondObstacle(440, 100, 300, 30);
 	RectangularObstacle thirdObstacle(0, SCREEN_HEIGHT - 30, 30, SCREEN_WIDTH);
@@ -84,20 +84,20 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 
 
 		clear(renderer);
-		firstObstacle.print(renderer);
-		secondObstacle.print(renderer);
-		thirdObstacle.print(renderer);
-		fourthObstacle.print(renderer);
-		fifthObstacle.print(renderer);
-		sixthObstacle.print(renderer);
+		firstObstacle.print(renderer, &myPlayer);
+		secondObstacle.print(renderer, &myPlayer);
+		thirdObstacle.print(renderer, &myPlayer);
+		fourthObstacle.print(renderer, &myPlayer);
+		fifthObstacle.print(renderer, &myPlayer);
+		sixthObstacle.print(renderer, &myPlayer);
 		myPlayer.print(renderer);
 
 		SDL_RenderPresent(renderer);
 
 		endTime = SDL_GetTicks();
 		delta = endTime - startTime;
-		if (delta < TIME_BETWEEN_FRAMES)
-			SDL_Delay(TIME_BETWEEN_FRAMES - delta);
+		if (delta < (unsigned int)TIME_BETWEEN_FRAMES)
+			SDL_Delay((unsigned int)TIME_BETWEEN_FRAMES - delta);
 	}
 
 
