@@ -39,6 +39,8 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	const double x = 0.5;
 	const double y = -0.7;
 	const double g = 0.001;
+	const int tp = 100;
+	const unsigned int tTime = 1000;
 
 	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_HEIGHT, PLAYER_WIDTH, x, y, g);
 	RectangularObstacle firstObstacle((SCREEN_WIDTH - 400) / 2, (SCREEN_HEIGHT - 50) * 5 / 8, 50, 400);
@@ -67,16 +69,9 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 
 		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
+		applyInput(&myPlayer, currentKeyStates, tp, tTime);
+		
 
-		if (currentKeyStates[SDL_SCANCODE_W])
-			myPlayer.jump();
-
-		if (!currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
-			myPlayer.getPlayerMomentum()->setXVelocity(0);
-		else if (currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
-			myPlayer.moveLeft();
-		else if (!currentKeyStates[SDL_SCANCODE_A] && currentKeyStates[SDL_SCANCODE_D])
-			myPlayer.moveRight();
 
 
 		myPlayer.calculateNextPosition(TIME_BETWEEN_FRAMES);
@@ -109,6 +104,32 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 
 }
 
+
+void applyInput(Player* myPlayer, const Uint8* currentKeyStates, const int teleportDistance, const unsigned int timeBetweenTeleports)
+{
+	//jump
+	if (currentKeyStates[SDL_SCANCODE_W])
+		myPlayer->jump();
+	
+	//no horizontal movement
+	if (!currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
+		myPlayer->getPlayerMomentum()->setXVelocity(0);
+	//horizontal movement
+	else if (currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
+		myPlayer->moveLeft();
+	else if (!currentKeyStates[SDL_SCANCODE_A] && currentKeyStates[SDL_SCANCODE_D])
+		myPlayer->moveRight();
+	
+	//teleports
+	if (currentKeyStates[SDL_SCANCODE_UP])
+		myPlayer->teleport(Player::UP, teleportDistance, timeBetweenTeleports);
+	if (currentKeyStates[SDL_SCANCODE_DOWN])
+		myPlayer->teleport(Player::DOWN, teleportDistance, timeBetweenTeleports);
+	if (currentKeyStates[SDL_SCANCODE_LEFT])
+		myPlayer->teleport(Player::LEFT, teleportDistance, timeBetweenTeleports);
+	if (currentKeyStates[SDL_SCANCODE_RIGHT])
+		myPlayer->teleport(Player::RIGHT, teleportDistance, timeBetweenTeleports);
+}
 
 
 void clear(SDL_Renderer* rendererToPrintOn)

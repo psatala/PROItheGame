@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "RectangularObject.h"
 #include "RectangularObstacle.h"
-#include "BasicFunctions.h"
 #include "Momentum.h"
+
+
 
 class Player :
 	public RectangularObject
@@ -19,19 +19,16 @@ class Player :
 
 	Momentum playerMomentum;
 
-	///enum indicating direction
-	enum Direction { UP, DOWN, LEFT, RIGHT };
 
 	///contact in each direction
 	bool contact[4] = {0};
 
-	///function responsible for checking if player's top collided with an obstacle
-	///parameters are: obstacle to check, side to check
-	bool checkCollisionSide(RectangularObstacle* obstacle, Direction dir);
 
 public:
-	
-	
+
+	///enum indicating direction
+	enum Direction { UP, DOWN, LEFT, RIGHT };
+
 	///default constructor
 	Player();
 
@@ -51,6 +48,10 @@ public:
 	///function responsbile for moving to the left
 	void moveRight();
 
+	///function responsible for teleporting
+	///parameters are: direction in which teleport will take place
+	void teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports);
+
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
 	void calculateNextPosition(const double timeDifference);
@@ -69,6 +70,12 @@ public:
 	double getXConstant() { return xConstant; }
 	double getYConstant() { return yConstant; }
 	Momentum* getPlayerMomentum() { return &playerMomentum; }
+
+private:
 	
+	///function responsible for checking if player's top collided with an obstacle
+	///parameters are: obstacle to check, side to check
+	bool checkCollisionSide(RectangularObstacle* obstacle, Direction dir);
+
 };
 
