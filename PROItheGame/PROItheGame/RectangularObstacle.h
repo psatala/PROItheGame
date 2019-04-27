@@ -12,7 +12,7 @@ class RectangularObstacle :
 {
 public:
 	///constructor
-	RectangularObstacle(int x = 0, int y = 0, int h = 0, int w = 0) : RectangularObject(x, y, h, w) {};
+	RectangularObstacle(int x = 0, int y = 0, int w = 0, int h = 0) : RectangularObject(x, y, w, h) {};
 	
 	///destructor
 	~RectangularObstacle();

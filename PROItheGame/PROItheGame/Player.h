@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "RectangularObstacle.h"
 #include "Momentum.h"
 
@@ -38,14 +40,15 @@ public:
 
 	///parametrised constructor
 	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y
-	Player(int x, int y, int h, int w, double xC, double yC, double g, const int pH, const int pW):
+	Player(int x, int y, int w, int h, double xC, double yC, double g, const int pW, const int pH):
 		xConstant(xC),
 		yConstant(yC),
 		gravityConstant(g),
-		RectangularObject(x, y, h, w),
+		RectangularObject(x, y, w, h),
 		playerMomentum(gravityConstant),
-		PLAYER_HEIGHT(pH),
-		PLAYER_WIDTH(pW)
+		PLAYER_WIDTH(pW),
+		PLAYER_HEIGHT(pH)
+		
 	{};
 
 	///destructor
@@ -61,8 +64,8 @@ public:
 	void moveRight();
 
 	///function responsible for teleporting
-	///parameters are: direction in which teleport will take place
-	void teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports);
+	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
+	void teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports, std::vector<RectangularObstacle*> myVector);
 
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
@@ -88,9 +91,16 @@ public:
 
 private:
 	
-	///function responsible for checking if player's top collided with an obstacle
+	///function responsible for checking if player's side collided with an obstacle
 	///parameters are: obstacle to check, side to check
 	bool checkCollisionSide(RectangularObstacle* obstacle, Direction dir);
 
+	///function responsible for checking if player is inside any obstacle from the given vector
+	///parameters are: vector of obstacles to check
+	bool checkIfInsideAny(std::vector <RectangularObstacle*> myVector);
+
+	///function responsible for checking if player is inside an obstacle
+	///parameters are: obstacle to check
+	bool checkIfInsideOneObject(RectangularObstacle* obstacle);
 };
 

@@ -10,10 +10,14 @@ Player::Player()
 	RectangularObject();
 }
 
+
+
 Player::~Player()
 {
 
 }
+
+
 
 void Player::jump()
 {
@@ -21,29 +25,47 @@ void Player::jump()
 		playerMomentum.setYVelocity(yConstant);
 }
 
+
+
 void Player::moveRight()
 {
 	playerMomentum.setXVelocity(xConstant);
 }
+
+
 
 void Player::moveLeft()
 {
 	playerMomentum.setXVelocity(-xConstant);
 }
 
-void Player::teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports)
+
+
+void Player::teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports, std::vector<RectangularObstacle*> myVector)
 {
 	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
 	if (now - lastTime >= timeBetweenTeleports || 0 == lastTime)
 	{
+		//auxiliary arrays
 		int x[] = { 0, 0, -1, 1 };
 		int y[] = { -1, 1, 0, 0 };
+
+		//teleporting
 		xCoordinate += x[(int)dir] * teleportDistance;
 		yCoordinate += y[(int)dir] * teleportDistance;
-		lastTime = now;
+
+		if (checkIfInsideAny(myVector)) //reversing teleport in case player is inside an object
+		{
+			xCoordinate -= x[(int)dir] * teleportDistance;
+			yCoordinate -= y[(int)dir] * teleportDistance;
+		}
+		else //updating timer
+			lastTime = now;
 	}
 }
+
+
 
 void Player::calculateNextPosition(const double timeDifference)
 {
@@ -62,6 +84,8 @@ void Player::calculateNextPosition(const double timeDifference)
 		contact[i] = false;
 }
 
+
+
 void Player::print(SDL_Renderer* rendererToPrintOn)
 {
 	int RENDERER_HEIGHT;
@@ -73,6 +97,8 @@ void Player::print(SDL_Renderer* rendererToPrintOn)
 	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
 
 }
+
+
 
 void Player::checkCollision(RectangularObstacle* obstacle)
 {
@@ -112,6 +138,8 @@ void Player::checkCollision(RectangularObstacle* obstacle)
 
 }
 
+
+
 bool Player::checkCollisionSide(RectangularObstacle* obstacle, Direction dir)
 {
 	switch (dir)
@@ -146,4 +174,22 @@ bool Player::checkCollisionSide(RectangularObstacle* obstacle, Direction dir)
 	default:
 		return false;
 	}
+}
+
+
+
+bool Player::checkIfInsideAny(std::vector <RectangularObstacle*> myVector)
+{
+	bool result = false;
+	for (std::vector <RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+		result |= checkIfInsideOneObject(*it);
+	return result;
+}
+
+
+
+bool Player::checkIfInsideOneObject(RectangularObstacle* obstacle)
+{
+	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
+		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();
 }
