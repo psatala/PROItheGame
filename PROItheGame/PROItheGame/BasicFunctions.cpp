@@ -43,7 +43,9 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	const unsigned int tTime = 1000;
 
 	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_WIDTH, PLAYER_HEIGHT, x, y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
-	RectangularEnemy firstEnemy(100, 50, 25, 25, x, y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
+	
+	RectangularEnemy firstEnemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
+	RectangularEnemy secondEnemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
 
 	vector <RectangularObstacle*> myVector;
 
@@ -78,34 +80,48 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		}
 
 
-		//getting and applying input
+		//getting and applying input for the player
 		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 		applyInput(&myPlayer, currentKeyStates, tp, tTime, myVector);
 		
-
+		//applying behaviour for the enemies
+		firstEnemy.applyBehaviour(&RectangularEnemy::behaveJump);
+		secondEnemy.applyBehaviour(&RectangularEnemy::behaveBounce);
 
 		//updating objects positions
 		myPlayer.calculateNextPosition(TIME_BETWEEN_FRAMES);
 		firstEnemy.calculateNextPosition(TIME_BETWEEN_FRAMES);
+		secondEnemy.calculateNextPosition(TIME_BETWEEN_FRAMES);
+		
+		
 		
 		//checking collisions
+		
 		
 		//player
 		for (vector<RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
 			myPlayer.checkCollision(*it);
+		
+		
 		//enemies
 		for (vector<RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
 			firstEnemy.checkCollision(*it);
 		firstEnemy.checkCollision(&myPlayer);
+		
+		for (vector<RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+			secondEnemy.checkCollision(*it);
+		secondEnemy.checkCollision(&myPlayer);
 
-
+		
+		
 		clear(renderer);
 		
 		//printing
 		for (vector<RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
 			(**it).print(renderer, &myPlayer);
 		firstEnemy.print(renderer, &myPlayer);
-		
+		secondEnemy.print(renderer, &myPlayer);
+
 		myPlayer.print(renderer);
 
 		SDL_RenderPresent(renderer);

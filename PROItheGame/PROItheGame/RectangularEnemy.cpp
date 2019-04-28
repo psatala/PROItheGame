@@ -8,9 +8,11 @@ RectangularEnemy::RectangularEnemy()
 }
 
 
+
 RectangularEnemy::~RectangularEnemy()
 {
 }
+
 
 
 void RectangularEnemy::checkCollision(Player* myPlayer)
@@ -23,7 +25,12 @@ void RectangularEnemy::checkCollision(Player* myPlayer)
 	//check contact up
 	if (contactWithThisObject[UP] = myPlayer->checkCollisionSide(this, DOWN))
 	{
-		getPlayerMomentum()->setYVelocity(0);
+		//changing player's velocity in y to 0
+		Momentum* newMomentum = myPlayer->getPlayerMomentum();
+		newMomentum->setYVelocity(0);
+		myPlayer->setPlayerMomentum(*newMomentum);
+		
+		
 		yCoordinate = round(myPlayer->getYCoordinate() + myPlayer->getObjectHeight());
 		this->setIsAlive(false);
 	}
@@ -58,6 +65,8 @@ void RectangularEnemy::checkCollision(Player* myPlayer)
 
 }
 
+
+
 void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if the enemy's dead
@@ -73,4 +82,39 @@ void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 	SDL_Rect playerRect = { (int)xCoordinate - playerMoveX, (int)yCoordinate - playerMoveY, objectWidth, objectHeight };
 	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
+}
+
+
+
+
+
+//behaviour funtions
+
+void RectangularEnemy::behaveJump()
+{
+	jump();
+}
+
+void RectangularEnemy::behaveBounce()
+{
+	static bool isAfterFirstBounce = false;
+	if (contact[RIGHT])
+	{
+		moveLeft();
+		isAfterFirstBounce = true;
+	}
+	else if (contact[LEFT])
+	{
+		moveRight();
+		isAfterFirstBounce = true;
+	}
+	else if (!isAfterFirstBounce)
+		moveLeft();
+}
+
+
+
+void RectangularEnemy::applyBehaviour(void(RectangularEnemy::*behaviour)())
+{
+	(this->*behaviour)();
 }
