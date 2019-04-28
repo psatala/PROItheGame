@@ -5,9 +5,12 @@
 #pragma once
 
 #include <vector>
+#include <math.h>
 
 #include "RectangularObstacle.h"
 #include "Momentum.h"
+
+
 
 ///forward declaration of RectangularObstacle
 class RectangularObstacle;
@@ -20,15 +23,19 @@ class Player :
 	const double yConstant = 0;
 	const double gravityConstant = 0;
 
+
+	Momentum playerMomentum;
+	bool isAlive;
+
+
+
+protected:
+
 	const int PLAYER_HEIGHT = 0;
 	const int PLAYER_WIDTH = 0;
 
-	Momentum playerMomentum;
-
-
 	///contact in each direction
-	bool contact[4] = {0};
-
+	bool contact[4] = { 0 };
 
 public:
 
@@ -39,7 +46,7 @@ public:
 	Player();
 
 	///parametrised constructor
-	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y
+	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y, gravity constant, player width and height
 	Player(int x, int y, int w, int h, double xC, double yC, double g, const int pW, const int pH):
 		xConstant(xC),
 		yConstant(yC),
@@ -52,7 +59,7 @@ public:
 	{};
 
 	///destructor
-	~Player();
+	virtual ~Player();
 
 	///function responsible for jumping
 	void jump();
@@ -73,13 +80,15 @@ public:
 
 	///function responsbile for printing the player onto the surface
 	///parameters are: renderer to print the player on
-	void print(SDL_Renderer* rendererToPrintOn);
+	virtual void print(SDL_Renderer* rendererToPrintOn);
 
-	///function responsible for checking if player collided with an obstacle and reacts accordingly to whatever part hit the obstacle
+	///function responsible for checking if player collided with an obstacle and reacting accordingly to whatever part hit the obstacle
 	///parameters are: obstacle to check
 	void checkCollision(RectangularObstacle* obstacle);
 
-
+	///function responsible for checking if player's side collided with an obstacle
+	///parameters are: obstacle to check, side to check
+	bool checkCollisionSide(RectangularObject* obstacle, Direction dir);
 
 	///getters
 	double getXConstant() { return xConstant; }
@@ -87,13 +96,14 @@ public:
 	Momentum* getPlayerMomentum() { return &playerMomentum; }
 	int getPlayerHeight() { return PLAYER_HEIGHT; }
 	int getPlayerWidth() { return PLAYER_WIDTH; }
+	bool getIsAlive() { return isAlive; }
+
+	///setters
+	void setIsAlive(bool newValue) { isAlive = newValue; }
+
 
 
 private:
-	
-	///function responsible for checking if player's side collided with an obstacle
-	///parameters are: obstacle to check, side to check
-	bool checkCollisionSide(RectangularObstacle* obstacle, Direction dir);
 
 	///function responsible for checking if player is inside any obstacle from the given vector
 	///parameters are: vector of obstacles to check
