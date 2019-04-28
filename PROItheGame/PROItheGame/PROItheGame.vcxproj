@@ -161,6 +161,7 @@
     <ClCompile Include="BasicFunctions.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
+    <ClCompile Include="RectangularEnemy.cpp" />
     <ClCompile Include="RectangularObject.cpp" />
     <ClCompile Include="RectangularObstacle.cpp" />
   </ItemGroup>
@@ -169,6 +170,7 @@
     <ClInclude Include="BasicFunctions.h" />
     <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RectangularEnemy.h" />
     <ClInclude Include="RectangularObject.h" />
     <ClInclude Include="RectangularObstacle.h" />
   </ItemGroup>

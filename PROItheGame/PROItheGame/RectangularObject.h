@@ -12,7 +12,7 @@ protected:
 	int objectWidth;
 
 public:
-	RectangularObject(int x = 0, int y = 0, int h = 0, int w = 0) : xCoordinate(x), yCoordinate(y), objectHeight(h), objectWidth(w) {};
+	RectangularObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
 	
 	virtual ~RectangularObject();
 
