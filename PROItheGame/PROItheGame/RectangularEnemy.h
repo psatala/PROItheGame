@@ -3,6 +3,7 @@
 class RectangularEnemy :
 	public Player
 {
+	
 public:
 	///unparametrised constructor
 	RectangularEnemy();
@@ -25,5 +26,21 @@ public:
 
 	///using function from class Player to check collision with obstacles
 	using Player::checkCollision;
+
+	///function responsible for handling the enemy behaviour
+	///parameters are: behaviour function
+	void applyBehaviour(void (RectangularEnemy::*behaviour)());
+
+
+
+
+	//behaviour functions
+
+	///function responsible for handling the enemy behaviour - the enemy constantly jumps
+	void behaveJump();
+
+	///function responsible for handling the enemy behaviour - the enemy moves in x and bounces from obstacles
+	void behaveBounce();
+
 };
 

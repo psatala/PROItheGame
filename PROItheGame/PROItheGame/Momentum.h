@@ -39,6 +39,8 @@ public:
 	///assingment operator
 	Momentum& operator=(const Momentum& other) { xVelocity = other.xVelocity;
 	                                             yVelocity = other.yVelocity;
-												 gForce = other.gForce; }
+												 gForce = other.gForce;
+												 return *this;
+	}
 };
 

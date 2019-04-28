@@ -100,6 +100,7 @@ public:
 
 	///setters
 	void setIsAlive(bool newValue) { isAlive = newValue; }
+	void setPlayerMomentum(Momentum newValue) { playerMomentum = newValue; }
 
 
 
