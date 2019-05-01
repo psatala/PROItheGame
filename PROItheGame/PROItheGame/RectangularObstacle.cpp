@@ -8,6 +8,13 @@ RectangularObstacle::~RectangularObstacle()
 {
 }
 
+void RectangularObstacle::checkIfKilled(Player* myPlayer, bool* contactWithThisObject)
+{
+	for (int i = 0; i < 4; i++)
+		if (getCanItKill() and contactWithThisObject[i])
+			myPlayer->setIsAlive(false);
+}
+
 void RectangularObstacle::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 {
 	int RENDERER_HEIGHT;

@@ -1,6 +1,11 @@
 #pragma once
 
 #include "AbstractObject.h"
+#include "Player.h"
+
+
+///forward declaration of Player
+class Player;
 
 class RectangularObject :
 	public AbstractObject
@@ -15,6 +20,10 @@ public:
 	RectangularObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
 	
 	virtual ~RectangularObject();
+
+	///function responsbile for checking if the object of this class has killed the given player
+	///parameters are: player to check, array indicating contact in each direction
+	virtual void checkIfKilled(Player* myPlayer, bool* contactWithThisObject) {}
 
 	///setters
 	void setXCoordinate(double newValue) { xCoordinate = newValue; }

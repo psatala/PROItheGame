@@ -1,11 +1,8 @@
 #pragma once
 
 #include "RectangularObject.h"
-#include "Player.h"
 
 
-///forward declaration of Player
-class Player;
 
 class RectangularObstacle :
 	public RectangularObject
@@ -17,6 +14,10 @@ public:
 	
 	///destructor
 	~RectangularObstacle();
+
+	///function responsbile for checking if the object of this class has killed the given player
+	///parameters are: player to check, array indicating contact in each direction
+	void checkIfKilled(Player* myPlayer, bool* contactWithThisObject);
 	
 	///function prints the object onto the window in relation to the player
 	void print(SDL_Renderer* rendererToPrintOn, Player* myPlayer);

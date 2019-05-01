@@ -41,7 +41,7 @@ void Player::moveLeft()
 
 
 
-void Player::teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports, std::vector<RectangularObstacle*> myVector)
+void Player::teleport(Direction dir, std::vector<RectangularObstacle*> myVector)
 {
 	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
@@ -103,7 +103,7 @@ void Player::print(SDL_Renderer* rendererToPrintOn)
 
 
 
-void Player::checkCollision(RectangularObstacle* obstacle)
+void Player::checkCollision(RectangularObject* obstacle)
 {
 	if (!isAlive)
 		return;
@@ -142,13 +142,7 @@ void Player::checkCollision(RectangularObstacle* obstacle)
 	for (int i = 0; i < 4; i++)
 		contact[i] |= contactWithThisObject[i];
 
-	//check if player was killed by the obstacle
-	for (int i = 0; i < 4; i++)
-		if (obstacle->getCanItKill() and contactWithThisObject[i])
-			isAlive = false;
-
 }
-
 
 
 

@@ -39,13 +39,13 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	const double x = 10 / TIME_BETWEEN_FRAMES;
 	const double y = -14 / TIME_BETWEEN_FRAMES;
 	const double g = 0.4 / (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
-	const int tp = 200;
+	const int tDist = 200;
 	const unsigned int tTime = 1000;
 
-	Player myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_WIDTH, PLAYER_HEIGHT, x, y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
+	HumanPlayer myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_WIDTH, PLAYER_HEIGHT, x, y, g, tDist, tTime);
 	
-	RectangularEnemy firstEnemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
-	RectangularEnemy secondEnemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, PLAYER_WIDTH, PLAYER_HEIGHT);
+	RectangularEnemy firstEnemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, tDist, tTime);
+	RectangularEnemy secondEnemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, tDist, tTime);
 
 	vector <RectangularObstacle*> myVector;
 
@@ -69,8 +69,7 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	{
 		startTime = SDL_GetTicks();
 
-		//if (firstEnemy.getYCoordinate() > 244)
-		//	int a = 0;
+		
 
 		//handling events
 		while (SDL_PollEvent(&myEvent) != 0)
@@ -80,9 +79,8 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		}
 
 
-		//getting and applying input for the player
-		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-		applyInput(&myPlayer, currentKeyStates, tp, tTime, myVector);
+		//applying input for the player
+		myPlayer.applyInput(myVector);
 		
 		//applying behaviour for the enemies
 		firstEnemy.applyBehaviour(&RectangularEnemy::behaveJump);
@@ -139,31 +137,6 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 }
 
 
-void applyInput(Player* myPlayer, const Uint8* currentKeyStates, const int teleportDistance, const unsigned int timeBetweenTeleports, vector <RectangularObstacle*> myVector)
-{
-	//jump
-	if (currentKeyStates[SDL_SCANCODE_W])
-		myPlayer->jump();
-	
-	//no horizontal movement
-	if (!currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
-		myPlayer->getPlayerMomentum()->setXVelocity(0);
-	//horizontal movement
-	else if (currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
-		myPlayer->moveLeft();
-	else if (!currentKeyStates[SDL_SCANCODE_A] && currentKeyStates[SDL_SCANCODE_D])
-		myPlayer->moveRight();
-	
-	//teleports
-	if (currentKeyStates[SDL_SCANCODE_UP])
-		myPlayer->teleport(Player::UP, teleportDistance, timeBetweenTeleports, myVector);
-	if (currentKeyStates[SDL_SCANCODE_DOWN])
-		myPlayer->teleport(Player::DOWN, teleportDistance, timeBetweenTeleports, myVector);
-	if (currentKeyStates[SDL_SCANCODE_LEFT])
-		myPlayer->teleport(Player::LEFT, teleportDistance, timeBetweenTeleports, myVector);
-	if (currentKeyStates[SDL_SCANCODE_RIGHT])
-		myPlayer->teleport(Player::RIGHT, teleportDistance, timeBetweenTeleports, myVector);
-}
 
 
 void clear(SDL_Renderer* rendererToPrintOn)
