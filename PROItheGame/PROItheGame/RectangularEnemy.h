@@ -1,5 +1,6 @@
 #pragma once
-#include "Player.h"
+#include "HumanPlayer.h"
+
 class RectangularEnemy :
 	public Player
 {
@@ -9,20 +10,20 @@ public:
 	RectangularEnemy();
 	
 	///parametrised constructor
-	RectangularEnemy(int x, int y, int w, int h, double xC, double yC, double g, const int pW, const int pH) :
-		Player(x, y, w, h, xC, yC, g, pW, pH) {};
+	RectangularEnemy(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
+		Player(x, y, w, h, xC, yC, g, tDist, tTime) {};
 
 	///destructor
-	~RectangularEnemy();
+	virtual ~RectangularEnemy();
 
 
 	///function responsbile for printing the enemy onto the surface in relation to the player
 	///parameters are: renderer to print the enemy on, player to whose position function relates
-	void print(SDL_Renderer* rendererToPrintOn, Player* myPlayer);
+	void print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer);
 
 	///function responsible for checking if enemy collided with a player and reacting accordingly to whatever part hit the player
 	///parameters are: player to check
-	void checkCollision(Player* myPlayer);
+	void checkCollision(HumanPlayer* myPlayer);
 
 	///using function from class Player to check collision with obstacles
 	using Player::checkCollision;

@@ -41,7 +41,7 @@ void Player::moveLeft()
 
 
 
-void Player::teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports, std::vector<RectangularObstacle*> myVector)
+void Player::teleport(Direction dir, std::vector<RectangularObstacle*> myVector)
 {
 	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
