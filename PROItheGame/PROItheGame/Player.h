@@ -12,8 +12,8 @@
 
 
 
-///forward declaration of RectangularObject
-class RectangularObject;
+///forward declaration of RectangularObstacle
+class RectangularObstacle;
 
 class Player :
 	public RectangularObject
@@ -87,7 +87,7 @@ public:
 
 	///function responsible for checking if player collided with an obstacle and reacting accordingly to whatever part hit the obstacle
 	///parameters are: obstacle to check
-	void checkCollision(RectangularObject* obstacle);
+	void checkCollision(RectangularObstacle* obstacle);
 
 	///function responsible for checking if player's side collided with an obstacle
 	///parameters are: obstacle to check, side to check

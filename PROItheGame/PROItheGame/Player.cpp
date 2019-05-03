@@ -103,7 +103,7 @@ void Player::print(SDL_Renderer* rendererToPrintOn)
 
 
 
-void Player::checkCollision(RectangularObject* obstacle)
+void Player::checkCollision(RectangularObstacle* obstacle)
 {
 	if (!isAlive)
 		return;
@@ -141,6 +141,11 @@ void Player::checkCollision(RectangularObject* obstacle)
 	//update overall contact
 	for (int i = 0; i < 4; i++)
 		contact[i] |= contactWithThisObject[i];
+
+	//check if contact with the obstacle killed the player
+	for (int i = 0; i < 4; i++)
+		if (obstacle->getCanItKill() && contactWithThisObject[i])
+			isAlive = false;
 
 }
 

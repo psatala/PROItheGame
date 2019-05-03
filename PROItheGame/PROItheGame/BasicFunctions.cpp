@@ -49,7 +49,6 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 
 	vector <RectangularObstacle*> myVector;
 
-	
 
 	myVector.push_back(&RectangularObstacle((SCREEN_WIDTH - 400) / 2, (SCREEN_HEIGHT - 50) * 5 / 8, 400, 50));
 	myVector.push_back(&RectangularObstacle(440, 100, 30, 300));
