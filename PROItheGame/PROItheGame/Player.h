@@ -9,7 +9,8 @@
 
 #include "RectangularObstacle.h"
 #include "Momentum.h"
-//#include "RectangularObject.h"
+
+
 
 ///forward declaration of RectangularObstacle
 class RectangularObstacle;

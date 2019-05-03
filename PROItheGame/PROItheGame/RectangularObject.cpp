@@ -9,7 +9,7 @@ RectangularObject::~RectangularObject()
 
 }
 
-void RectangularObject::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer)
+void RectangularObject::print(SDL_Renderer* rendererToPrintOn)
 {
 
 }
