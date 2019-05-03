@@ -2,6 +2,7 @@
 
 #include "AbstractObject.h"
 
+
 class RectangularObject :
 	public AbstractObject
 {
@@ -29,6 +30,6 @@ public:
 	int getObjectWidth() { return objectWidth; }
 
 
-	virtual void print(SDL_Renderer* rendererToPrintOn);
+	virtual void print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer);
 };
 
