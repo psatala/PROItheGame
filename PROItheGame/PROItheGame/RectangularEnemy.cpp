@@ -15,7 +15,7 @@ RectangularEnemy::~RectangularEnemy()
 
 
 
-void RectangularEnemy::checkCollision(Player* myPlayer)
+void RectangularEnemy::checkCollision(HumanPlayer* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if enemy's dead
 		return;
@@ -67,7 +67,7 @@ void RectangularEnemy::checkCollision(Player* myPlayer)
 
 
 
-void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
+void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if the enemy's dead
 		return;

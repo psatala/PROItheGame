@@ -15,7 +15,7 @@ public:
 	RectangularObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
 	
 	virtual ~RectangularObject();
-
+	
 	///setters
 	void setXCoordinate(double newValue) { xCoordinate = newValue; }
 	void setYCoordinate(double newValue) { yCoordinate = newValue; }

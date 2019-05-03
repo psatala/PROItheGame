@@ -22,7 +22,8 @@ class Player :
 	const double xConstant = 0;
 	const double yConstant = 0;
 	const double gravityConstant = 0;
-
+	const int teleportDistance = 0;
+	const unsigned int timeBetweenTeleports = 0;
 
 	Momentum playerMomentum;
 	bool isAlive;
@@ -46,16 +47,18 @@ public:
 	Player();
 
 	///parametrised constructor
-	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y, gravity constant, player width and height
-	Player(int x, int y, int w, int h, double xC, double yC, double g, const int pW, const int pH):
+	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y, gravity constant, distance covered by teleporting once and minimal time between teleports
+	Player(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
 		xConstant(xC),
 		yConstant(yC),
 		gravityConstant(g),
 		RectangularObject(x, y, w, h),
 		playerMomentum(gravityConstant),
-		PLAYER_WIDTH(pW),
-		PLAYER_HEIGHT(pH)
-		
+		PLAYER_WIDTH(w),
+		PLAYER_HEIGHT(h),
+		teleportDistance(tDist),
+		timeBetweenTeleports(tTime)
+
 	{};
 
 	///destructor
@@ -72,7 +75,7 @@ public:
 
 	///function responsible for teleporting
 	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
-	void teleport(Direction dir, const int teleportDistance, const unsigned int timeBetweenTeleports, std::vector<RectangularObstacle*> myVector);
+	void teleport(Direction dir, std::vector<RectangularObstacle*> myVector);
 
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
@@ -89,6 +92,7 @@ public:
 	///function responsible for checking if player's side collided with an obstacle
 	///parameters are: obstacle to check, side to check
 	bool checkCollisionSide(RectangularObject* obstacle, Direction dir);
+
 
 	///getters
 	double getXConstant() { return xConstant; }
