@@ -157,24 +157,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractObject.cpp" />
     <ClCompile Include="BasicFunctions.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
-    <ClCompile Include="RectangularEnemy.cpp" />
-    <ClCompile Include="RectangularObject.cpp" />
-    <ClCompile Include="RectangularObstacle.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractObject.h" />
     <ClInclude Include="BasicFunctions.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="RectangularEnemy.h" />
-    <ClInclude Include="RectangularObject.h" />
-    <ClInclude Include="RectangularObstacle.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Obstacle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

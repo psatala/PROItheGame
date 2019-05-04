@@ -1,14 +1,14 @@
-#include "RectangularObstacle.h"
+#include "Obstacle.h"
 
 
 
 
 
-RectangularObstacle::~RectangularObstacle()
+Obstacle::~Obstacle()
 {
 }
 
-void RectangularObstacle::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
+void Obstacle::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 {
 	int RENDERER_HEIGHT;
 	int RENDERER_WIDTH;

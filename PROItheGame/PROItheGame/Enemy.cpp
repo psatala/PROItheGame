@@ -1,21 +1,21 @@
-#include "RectangularEnemy.h"
+#include "Enemy.h"
 
 
 
-RectangularEnemy::RectangularEnemy()
+Enemy::Enemy()
 {
 	Player();
 }
 
 
 
-RectangularEnemy::~RectangularEnemy()
+Enemy::~Enemy()
 {
 }
 
 
 
-void RectangularEnemy::checkCollision(HumanPlayer* myPlayer)
+void Enemy::checkCollision(HumanPlayer* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if enemy's dead
 		return;
@@ -67,7 +67,7 @@ void RectangularEnemy::checkCollision(HumanPlayer* myPlayer)
 
 
 
-void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer)
+void Enemy::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if the enemy's dead
 		return;
@@ -90,12 +90,12 @@ void RectangularEnemy::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPla
 
 //behaviour funtions
 
-void RectangularEnemy::behaveJump()
+void Enemy::behaveJump()
 {
 	jump();
 }
 
-void RectangularEnemy::behaveBounce()
+void Enemy::behaveBounce()
 {
 	static bool isAfterFirstBounce = false;
 	if (contact[RIGHT])
@@ -114,7 +114,7 @@ void RectangularEnemy::behaveBounce()
 
 
 
-void RectangularEnemy::applyBehaviour(void(RectangularEnemy::*behaviour)())
+void Enemy::applyBehaviour(void(Enemy::*behaviour)())
 {
 	(this->*behaviour)();
 }

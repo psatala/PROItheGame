@@ -1,9 +1,10 @@
 #pragma once
+#include <SDL.h>
 
-#include "AbstractObject.h"
 
-class RectangularObject :
-	public AbstractObject
+class HumanPlayer;
+
+class GameObject
 {
 protected:
 	double xCoordinate;
@@ -12,9 +13,9 @@ protected:
 	int objectWidth;
 
 public:
-	RectangularObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
+	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
 	
-	virtual ~RectangularObject();
+	virtual ~GameObject();
 	
 	///setters
 	void setXCoordinate(double newValue) { xCoordinate = newValue; }
@@ -29,6 +30,7 @@ public:
 	int getObjectWidth() { return objectWidth; }
 
 
-	virtual void print(SDL_Renderer* rendererToPrintOn);
+	//virtual void print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer) {}
+	//Interface for HumanPlayer???
 };
 

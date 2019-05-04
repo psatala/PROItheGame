@@ -1,22 +1,29 @@
 #pragma once
 
-#include "RectangularObject.h"
+#include "GameObject.h"
 #include "Player.h"
 
 
 ///forward declaration of Player
 class Player;
 
-class RectangularObstacle :
-	public RectangularObject
+class Obstacle :
+	public GameObject
 {
 	bool canItKill;
 public:
 	///constructor
-	RectangularObstacle(int x = 0, int y = 0, int w = 0, int h = 0, bool canKill = false) : RectangularObject(x, y, w, h), canItKill(canKill) {};
+	Obstacle(int x = 0, int y = 0, int w = 0, int h = 0, bool canKill = false):
+		canItKill(canKill) 
+	{
+		xCoordinate = x;
+		yCoordinate = y;
+		objectWidth = w;
+		objectHeight = h;
+	};
 	
 	///destructor
-	~RectangularObstacle();
+	~Obstacle();
 	
 	///function prints the object onto the window in relation to the player
 	void print(SDL_Renderer* rendererToPrintOn, Player* myPlayer);
