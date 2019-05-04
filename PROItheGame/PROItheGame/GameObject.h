@@ -2,7 +2,6 @@
 #include <SDL.h>
 
 
-class HumanPlayer;
 
 class GameObject
 {
@@ -13,6 +12,9 @@ protected:
 	int objectWidth;
 
 public:
+	///function ensures the class is abstract
+	virtual void OverrideMe() = 0;
+
 	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
 	
 	virtual ~GameObject();
@@ -30,7 +32,5 @@ public:
 	int getObjectWidth() { return objectWidth; }
 
 
-	//virtual void print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer) {}
-	//Interface for HumanPlayer???
 };
 

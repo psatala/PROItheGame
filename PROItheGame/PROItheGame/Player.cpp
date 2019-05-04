@@ -7,7 +7,7 @@
 
 Player::Player()
 {
-	GameObject();
+
 }
 
 

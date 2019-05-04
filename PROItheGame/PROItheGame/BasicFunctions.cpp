@@ -57,8 +57,10 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	
 
 	vector <Enemy*> myEnemies;
-	myEnemies.push_back(&Enemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, tDist, tTime));
-	myEnemies.push_back(&Enemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, tDist, tTime));
+	myEnemies.push_back(&Enemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, tDist, tTime, "JUMP"));
+	myEnemies.push_back(&Enemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, tDist, tTime, "BOUNCE"));
+	myEnemies.push_back(&Enemy(0, -150, 50, 50, 0.5 * x, 0.5 * y, g, tDist, tTime));
+
 
 	Uint32 startTime;
 	Uint32 endTime;
@@ -84,13 +86,13 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		myPlayer.applyInput(myObstacles);
 		
 		//applying behaviour for the enemies
-		(*myEnemies[0]).applyBehaviour(&Enemy::behaveJump);
-		(*myEnemies[1]).applyBehaviour(&Enemy::behaveBounce);
+		for(vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
+			(**jt).applyBehaviour();
 
 		//updating objects positions
 		myPlayer.calculateNextPosition(TIME_BETWEEN_FRAMES);
-		(*myEnemies[0]).calculateNextPosition(TIME_BETWEEN_FRAMES);
-		(*myEnemies[1]).calculateNextPosition(TIME_BETWEEN_FRAMES);
+		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
+			(**jt).calculateNextPosition(TIME_BETWEEN_FRAMES);
 		
 		
 		
@@ -103,13 +105,13 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		
 		
 		//enemies
-		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-			(*myEnemies[0]).checkCollision(*it);
-		(*myEnemies[0]).checkCollision(&myPlayer);
+		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
+		{
+			for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
+				(**jt).checkCollision(*it);
+			(**jt).checkCollision(&myPlayer);
+		}
 		
-		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-			(*myEnemies[1]).checkCollision(*it);
-		(*myEnemies[1]).checkCollision(&myPlayer);
 
 		
 		
@@ -118,10 +120,11 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 		//printing
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
 			(**it).print(renderer, &myPlayer);
-		(*myEnemies[0]).print(renderer, &myPlayer);
-		(*myEnemies[1]).print(renderer, &myPlayer);
-
+		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
+			(**jt).print(renderer, &myPlayer);
 		myPlayer.print(renderer);
+
+
 
 		SDL_RenderPresent(renderer);
 

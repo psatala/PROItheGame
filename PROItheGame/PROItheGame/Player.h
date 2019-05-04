@@ -39,6 +39,8 @@ protected:
 	bool contact[4] = { 0 };
 
 public:
+	///function overriding abstract function from base class
+	void OverrideMe() {}
 
 	///enum indicating direction
 	enum Direction { UP, DOWN, LEFT, RIGHT };
