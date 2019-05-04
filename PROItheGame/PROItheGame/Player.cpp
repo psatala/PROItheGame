@@ -7,7 +7,7 @@
 
 Player::Player()
 {
-	RectangularObject();
+	GameObject();
 }
 
 
@@ -41,7 +41,7 @@ void Player::moveLeft()
 
 
 
-void Player::teleport(Direction dir, std::vector<RectangularObstacle*> myVector)
+void Player::teleport(Direction dir, std::vector<Obstacle*> myVector)
 {
 	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
@@ -103,7 +103,7 @@ void Player::print(SDL_Renderer* rendererToPrintOn)
 
 
 
-void Player::checkCollision(RectangularObstacle* obstacle)
+void Player::checkCollision(Obstacle* obstacle)
 {
 	if (!isAlive)
 		return;
@@ -151,7 +151,7 @@ void Player::checkCollision(RectangularObstacle* obstacle)
 
 
 
-bool Player::checkCollisionSide(RectangularObject* obstacle, Direction dir)
+bool Player::checkCollisionSide(GameObject* obstacle, Direction dir)
 {
 	switch (dir)
 	{
@@ -189,17 +189,17 @@ bool Player::checkCollisionSide(RectangularObject* obstacle, Direction dir)
 
 
 
-bool Player::checkIfInsideAny(std::vector <RectangularObstacle*> myVector)
+bool Player::checkIfInsideAny(std::vector <Obstacle*> myVector)
 {
 	bool result = false;
-	for (std::vector <RectangularObstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+	for (std::vector <Obstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
 		result |= checkIfInsideOneObject(*it);
 	return result;
 }
 
 
 
-bool Player::checkIfInsideOneObject(RectangularObstacle* obstacle)
+bool Player::checkIfInsideOneObject(Obstacle* obstacle)
 {
 	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
 		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();

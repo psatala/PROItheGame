@@ -1,20 +1,20 @@
 #pragma once
 #include "HumanPlayer.h"
 
-class RectangularEnemy :
+class Enemy :
 	public Player
 {
 	
 public:
 	///unparametrised constructor
-	RectangularEnemy();
+	Enemy();
 	
 	///parametrised constructor
-	RectangularEnemy(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
+	Enemy(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
 		Player(x, y, w, h, xC, yC, g, tDist, tTime) {};
 
 	///destructor
-	virtual ~RectangularEnemy();
+	virtual ~Enemy();
 
 
 	///function responsbile for printing the enemy onto the surface in relation to the player
@@ -30,7 +30,7 @@ public:
 
 	///function responsible for handling the enemy behaviour
 	///parameters are: behaviour function
-	void applyBehaviour(void (RectangularEnemy::*behaviour)());
+	void applyBehaviour(void (Enemy::*behaviour)());
 
 
 

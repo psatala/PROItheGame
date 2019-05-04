@@ -7,16 +7,16 @@
 #include <vector>
 #include <math.h>
 
-#include "RectangularObstacle.h"
+#include "Obstacle.h"
 #include "Momentum.h"
 
 
 
 ///forward declaration of RectangularObstacle
-class RectangularObstacle;
+class Obstacle;
 
 class Player :
-	public RectangularObject
+	public GameObject
 {
 	//Constants for velocity
 	const double xConstant = 0;
@@ -52,14 +52,17 @@ public:
 		xConstant(xC),
 		yConstant(yC),
 		gravityConstant(g),
-		RectangularObject(x, y, w, h),
 		playerMomentum(gravityConstant),
 		PLAYER_WIDTH(w),
 		PLAYER_HEIGHT(h),
 		teleportDistance(tDist),
 		timeBetweenTeleports(tTime)
-
-	{};
+	{
+		xCoordinate = x;
+		yCoordinate = y;
+		objectWidth = w;
+		objectHeight = h;
+	};
 
 	///destructor
 	virtual ~Player();
@@ -75,7 +78,7 @@ public:
 
 	///function responsible for teleporting
 	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
-	void teleport(Direction dir, std::vector<RectangularObstacle*> myVector);
+	void teleport(Direction dir, std::vector<Obstacle*> myVector);
 
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
@@ -87,11 +90,11 @@ public:
 
 	///function responsible for checking if player collided with an obstacle and reacting accordingly to whatever part hit the obstacle
 	///parameters are: obstacle to check
-	void checkCollision(RectangularObstacle* obstacle);
+	void checkCollision(Obstacle* obstacle);
 
 	///function responsible for checking if player's side collided with an obstacle
 	///parameters are: obstacle to check, side to check
-	bool checkCollisionSide(RectangularObject* obstacle, Direction dir);
+	bool checkCollisionSide(GameObject* obstacle, Direction dir);
 
 
 	///getters
@@ -112,10 +115,10 @@ private:
 
 	///function responsible for checking if player is inside any obstacle from the given vector
 	///parameters are: vector of obstacles to check
-	bool checkIfInsideAny(std::vector <RectangularObstacle*> myVector);
+	bool checkIfInsideAny(std::vector <Obstacle*> myVector);
 
 	///function responsible for checking if player is inside an obstacle
 	///parameters are: obstacle to check
-	bool checkIfInsideOneObject(RectangularObstacle* obstacle);
+	bool checkIfInsideOneObject(Obstacle* obstacle);
 };
 

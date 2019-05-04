@@ -17,6 +17,6 @@ public:
 
 	///function responsible for handling keyboard inputs for the player
 	///parameters are: vector of obstacles 
-	void applyInput(std::vector <RectangularObstacle*> myVector);
+	void applyInput(std::vector <Obstacle*> myVector);
 };
 

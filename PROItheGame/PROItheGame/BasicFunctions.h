@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 
-#include "RectangularEnemy.h"
+#include "Enemy.h"
 #include "HumanPlayer.h"
 
 bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH);
