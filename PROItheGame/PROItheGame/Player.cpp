@@ -41,7 +41,7 @@ void Player::moveLeft()
 
 
 
-void Player::teleport(Direction dir, std::vector<Obstacle*> myVector)
+void Player::teleport(Direction dir, std::vector<GameObject*> myVector)
 {
 	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
@@ -54,7 +54,8 @@ void Player::teleport(Direction dir, std::vector<Obstacle*> myVector)
 		//teleporting
 		xCoordinate += x[(int)dir] * teleportDistance;
 		yCoordinate += y[(int)dir] * teleportDistance;
-
+		
+		
 		if (checkIfInsideAny(myVector)) //reversing teleport in case player is inside an object
 		{
 			xCoordinate -= x[(int)dir] * teleportDistance;
@@ -189,17 +190,17 @@ bool Player::checkCollisionSide(GameObject* obstacle, Direction dir)
 
 
 
-bool Player::checkIfInsideAny(std::vector <Obstacle*> myVector)
+bool Player::checkIfInsideAny(std::vector <GameObject*> myVector)
 {
 	bool result = false;
-	for (std::vector <Obstacle*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+	for (std::vector <GameObject*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
 		result |= checkIfInsideOneObject(*it);
 	return result;
 }
 
 
 
-bool Player::checkIfInsideOneObject(Obstacle* obstacle)
+bool Player::checkIfInsideOneObject(GameObject* obstacle)
 {
 	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
 		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();

@@ -59,8 +59,11 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	vector <Enemy*> myEnemies;
 	myEnemies.push_back(&Enemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, tDist, tTime, "JUMP"));
 	myEnemies.push_back(&Enemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, tDist, tTime, "BOUNCE"));
-	myEnemies.push_back(&Enemy(0, -150, 50, 50, 0.5 * x, 0.5 * y, g, tDist, tTime));
+	myEnemies.push_back(&Enemy(0, -200, 150, 150, 0.5 * x, 0.5 * y, g, tDist, tTime));
 
+	vector<GameObject*> allObjects(myObstacles.begin(), myObstacles.end());
+	vector<GameObject*> auxiliaryVector(myEnemies.begin(), myEnemies.end());
+	allObjects.insert(allObjects.end(), auxiliaryVector.begin(), auxiliaryVector.end());
 
 	Uint32 startTime;
 	Uint32 endTime;
@@ -83,7 +86,7 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 
 
 		//applying input for the player
-		myPlayer.applyInput(myObstacles);
+		myPlayer.applyInput(allObjects);
 		
 		//applying behaviour for the enemies
 		for(vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
