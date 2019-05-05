@@ -21,7 +21,7 @@ Player::~Player()
 
 void Player::jump()
 {
-	if(contact[DOWN])
+	if(gravityConstant >= 0 && contact[DOWN] || gravityConstant < 0 && contact[UP])
 		playerMomentum.setYVelocity(yConstant);
 }
 

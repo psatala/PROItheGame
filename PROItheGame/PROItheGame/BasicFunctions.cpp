@@ -31,7 +31,7 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	return success;
 }
 
-void load(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies)
+void loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies, const double TIME_BETWEEN_FRAMES)
 {
 	//*myPlayer = &HumanPlayer(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	//myObstacles->push_back(&Obstacle());
@@ -43,6 +43,7 @@ void load(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacl
 	else
 	{
 		
+		//temporary variables
 		char c;
 		int xPos;
 		int yPos;
@@ -60,20 +61,47 @@ void load(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacl
 		{
 			
 			myFile >> c >> xPos >> yPos >> width >> height;
+			
 			switch (c)
 			{
+			
 			case 'P': //player
+
+				//reading necessary data from file
 				myFile >> xSpeed >> ySpeed >> gForce >> tDist >> tTime;
+				
+				//calibrating speeds and acceleration
+				xSpeed /= TIME_BETWEEN_FRAMES;
+				ySpeed /= TIME_BETWEEN_FRAMES;
+				gForce /= (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
+				
+				//creating object
 				*myPlayer = new HumanPlayer(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime);				
 				break;
+
 			case 'O': //obstacle
+
+				//reading necessary data from file
 				myFile >> canKill;
+
+				//adding object to vector
 				myObstacles->push_back(new Obstacle(xPos, yPos, width, height, canKill));
 				break;
+
 			case 'E': //enemy
+				
+				//reading necessary data from file
 				myFile >> xSpeed >> ySpeed >> gForce >> tDist >> tTime >> behaviourType;
+
+				//calibrating speeds and acceleration
+				xSpeed /= TIME_BETWEEN_FRAMES;
+				ySpeed /= TIME_BETWEEN_FRAMES;
+				gForce /= (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
+				
+				//adding object to vector
 				myEnemies->push_back(new Enemy(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime, behaviourType));
 				break;
+
 			default:
 				cout << "Wrong character\n";
 				break;
@@ -83,7 +111,7 @@ void load(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacl
 	}
 }
 
-void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const double TIME_BETWEEN_FRAMES)
+void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const double TIME_BETWEEN_FRAMES)
 {
 	bool quit = false;
 	SDL_Event myEvent;
@@ -99,31 +127,12 @@ void play(SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, c
 	vector <Enemy*> myEnemies;
 
 	
-	try
-	{
-		load("Levels/Level01.txt", &myPlayer, &myObstacles, &myEnemies);
-	}
-	catch (string message)
-	{
-		cerr << message << endl;
-	}
+	//load the level
+	try { loadLevel(pathToFile, &myPlayer, &myObstacles, &myEnemies, TIME_BETWEEN_FRAMES); }
+	catch (string message) { cerr << message << endl; }
 
 
-	/*HumanPlayer myPlayer((SCREEN_WIDTH - PLAYER_WIDTH) / 2, (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2, PLAYER_WIDTH, PLAYER_HEIGHT, x, y, g, tDist, tTime);
-
-	vector <Obstacle*> myObstacles;
-	myObstacles.push_back(&Obstacle((SCREEN_WIDTH - 400) / 2, (SCREEN_HEIGHT - 50) * 5 / 8, 400, 50));
-	myObstacles.push_back(&Obstacle(440, 100, 30, 300));
-	myObstacles.push_back(&Obstacle(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30));
-	myObstacles.push_back(&Obstacle(0, 0, 15, SCREEN_HEIGHT));
-	myObstacles.push_back(&Obstacle(SCREEN_WIDTH - 15, 0, 15, SCREEN_HEIGHT));
-	myObstacles.push_back(&Obstacle(0, 0, SCREEN_WIDTH, 15));
-	myObstacles.push_back(&Obstacle(0, SCREEN_HEIGHT + 300, SCREEN_WIDTH, 400, true));
-
-	vector <Enemy*> myEnemies;
-	myEnemies.push_back(&Enemy(100, 50, 25, 25, 0.5 * x, 0.5 * y, g, tDist, tTime, "JUMP"));
-	myEnemies.push_back(&Enemy(50, 420, 30, 30, 0.5 * x, 0.5 * y, g, tDist, tTime, "BOUNCE"));
-	myEnemies.push_back(&Enemy(0, -200, 150, 150, 0.5 * x, 0.5 * y, g, tDist, tTime));*/
+	
 
 	vector<GameObject*> allObjects(myObstacles.begin(), myObstacles.end());
 	vector<GameObject*> auxiliaryVector(myEnemies.begin(), myEnemies.end());
