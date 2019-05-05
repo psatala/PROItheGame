@@ -111,10 +111,3 @@ void Enemy::behaveBounce()
 	else if (!isAfterFirstBounce)
 		moveLeft();
 }
-
-
-
-void Enemy::applyBehaviour(void(Enemy::*behaviour)())
-{
-	(this->*behaviour)();
-}

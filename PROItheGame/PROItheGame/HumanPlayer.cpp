@@ -12,7 +12,7 @@ HumanPlayer::~HumanPlayer()
 {
 }
 
-void HumanPlayer::applyInput(std::vector <Obstacle*> myVector)
+void HumanPlayer::applyInput(std::vector <GameObject*> myVector)
 {
 	//getting keyboard state
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);

@@ -22,7 +22,7 @@ int main()
 
 	if (init(&window, &renderer, SCREEN_HEIGHT, SCREEN_WIDTH))
 	{
-		play(window, renderer, SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH, TIME_BETWEEN_FRAMES);
+		playLevel("Levels/Level03.txt", window, renderer, SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH, TIME_BETWEEN_FRAMES);
 		//close();
 	}
 		

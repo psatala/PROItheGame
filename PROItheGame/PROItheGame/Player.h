@@ -39,6 +39,8 @@ protected:
 	bool contact[4] = { 0 };
 
 public:
+	///function overriding abstract function from base class
+	void OverrideMe() {}
 
 	///enum indicating direction
 	enum Direction { UP, DOWN, LEFT, RIGHT };
@@ -78,7 +80,7 @@ public:
 
 	///function responsible for teleporting
 	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
-	void teleport(Direction dir, std::vector<Obstacle*> myVector);
+	void teleport(Direction dir, std::vector<GameObject*> myVector);
 
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
@@ -115,10 +117,10 @@ private:
 
 	///function responsible for checking if player is inside any obstacle from the given vector
 	///parameters are: vector of obstacles to check
-	bool checkIfInsideAny(std::vector <Obstacle*> myVector);
+	bool checkIfInsideAny(std::vector <GameObject*> myVector);
 
 	///function responsible for checking if player is inside an obstacle
 	///parameters are: obstacle to check
-	bool checkIfInsideOneObject(Obstacle* obstacle);
+	bool checkIfInsideOneObject(GameObject* obstacle);
 };
 

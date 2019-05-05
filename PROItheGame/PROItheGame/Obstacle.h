@@ -12,6 +12,9 @@ class Obstacle :
 {
 	bool canItKill;
 public:
+	///function overriding abstract function from base class
+	void OverrideMe() {}
+
 	///constructor
 	Obstacle(int x = 0, int y = 0, int w = 0, int h = 0, bool canKill = false):
 		canItKill(canKill) 
@@ -26,6 +29,7 @@ public:
 	~Obstacle();
 	
 	///function prints the object onto the window in relation to the player
+	///parameters are: renderer to print on, player to relate to
 	void print(SDL_Renderer* rendererToPrintOn, Player* myPlayer);
 
 	///getters
