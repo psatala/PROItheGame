@@ -111,3 +111,35 @@ void Enemy::behaveBounce()
 	else if (!isAfterFirstBounce)
 		moveLeft();
 }
+
+
+
+void Enemy::behaveTeleportUP()
+{
+	//placeholder solution
+	teleport(UP, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportDOWN()
+{
+	//placeholder solution
+	teleport(DOWN, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportLEFT()
+{
+	//placeholder solution
+	teleport(LEFT, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportRIGHT()
+{
+	//placeholder solution
+	teleport(RIGHT, std::vector<GameObject*>());
+}

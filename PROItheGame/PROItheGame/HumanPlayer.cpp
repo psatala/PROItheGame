@@ -23,7 +23,7 @@ void HumanPlayer::applyInput(std::vector <GameObject*> myVector)
 
 	//no horizontal movement
 	if (!currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
-		getPlayerMomentum()->setXVelocity(0);
+		stopX();
 	//horizontal movement
 	else if (currentKeyStates[SDL_SCANCODE_A] && !currentKeyStates[SDL_SCANCODE_D])
 		moveLeft();
