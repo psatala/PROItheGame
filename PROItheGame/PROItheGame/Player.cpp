@@ -40,12 +40,17 @@ void Player::moveLeft()
 }
 
 
+void Player::stopX()
+{
+	playerMomentum.setXVelocity(0);
+}
+
+
 
 void Player::teleport(Direction dir, std::vector<GameObject*> myVector)
 {
-	static Uint32 lastTime;
 	Uint32 now = SDL_GetTicks();
-	if (now - lastTime >= timeBetweenTeleports || 0 == lastTime)
+	if (now - lastTeleportTime >= timeBetweenTeleports || 0 == lastTeleportTime)
 	{
 		//auxiliary arrays
 		int x[] = { 0, 0, -1, 1 };
@@ -62,7 +67,7 @@ void Player::teleport(Direction dir, std::vector<GameObject*> myVector)
 			yCoordinate -= y[(int)dir] * teleportDistance;
 		}
 		else //updating timer
-			lastTime = now;
+			lastTeleportTime = now;
 	}
 }
 

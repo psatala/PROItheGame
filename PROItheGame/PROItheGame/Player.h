@@ -27,6 +27,7 @@ class Player :
 
 	Momentum playerMomentum;
 	bool isAlive;
+	Uint32 lastTeleportTime = 0; //time of the last teleport
 
 
 
@@ -69,19 +70,6 @@ public:
 	///destructor
 	virtual ~Player();
 
-	///function responsible for jumping
-	void jump();
-
-	///funstion responsbile for moving to the right
-	void moveLeft();
-
-	///function responsbile for moving to the left
-	void moveRight();
-
-	///function responsible for teleporting
-	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
-	void teleport(Direction dir, std::vector<GameObject*> myVector);
-
 	///function responsbile for calculating next position of the object based on previous position and speed
 	///parameters are: time between frames
 	void calculateNextPosition(const double timeDifference);
@@ -110,6 +98,25 @@ public:
 	///setters
 	void setIsAlive(bool newValue) { isAlive = newValue; }
 	void setPlayerMomentum(Momentum newValue) { playerMomentum = newValue; }
+
+
+
+protected:
+	///function responsible for jumping
+	void jump();
+
+	///function responsbile for moving to the left
+	void moveRight();
+
+	///funstion responsbile for moving to the right
+	void moveLeft();
+
+	///function responsible for stopping the player in x axis
+	void stopX();
+
+	///function responsible for teleporting
+	///parameters are: direction in which teleport will take place, distance of the teleport, minimal time between two teleports in miliseconds and vector of obstacles
+	void teleport(Direction dir, std::vector<GameObject*> myVector);
 
 
 
