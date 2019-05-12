@@ -159,20 +159,26 @@
   <ItemGroup>
     <ClCompile Include="BasicFunctions.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
+    <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="TreeElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicFunctions.h" />
     <ClInclude Include="HumanPlayer.h" />
+    <ClInclude Include="MenuObject.h" />
     <ClInclude Include="Momentum.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="TreeElement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
