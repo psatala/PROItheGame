@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicFunctions.h" />
+    <ClInclude Include="Macros.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="MenuObject.h" />
     <ClInclude Include="Momentum.h" />

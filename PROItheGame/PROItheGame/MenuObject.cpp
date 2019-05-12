@@ -2,10 +2,6 @@
 
 
 
-MenuObject::MenuObject()
-{
-}
-
 
 MenuObject::~MenuObject()
 {

@@ -6,8 +6,30 @@ class Tree
 {
 	TreeElement* ptrToCurrentElement;
 public:
-	Tree();
-	void apply(TreeElement* newCurrentElement);
-	virtual ~Tree();
+	
+	//constructor
+	Tree(TreeElement* firstElement = NULL):
+		ptrToCurrentElement(firstElement) {}
+
+
+	//destructor
+	~Tree();
+
+
+	//moving
+	void goTo(int indexOfSon);
+	void goTo(TreeElement* newCurrentElement);
+
+
+	//adding new element
+	void add(TreeElement* addHere, TreeElement* newElement);
+	void add(TreeElement* newElement);
+
+
+	//returning
+	const int tryReturning();
+
+	//printing
+	void printTree(SDL_Renderer* rendererToPrintOn);
 };
 

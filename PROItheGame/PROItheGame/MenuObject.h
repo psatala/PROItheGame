@@ -2,17 +2,33 @@
 
 #include <string>
 
-#include "GameObject.h"
+#include <SDL.h>
 
-class MenuObject :
-	public GameObject
+class MenuObject
 {
 	std::string text;
+	
+	int height;
+	int width;
 public:
-	MenuObject();
 
-	virtual ~MenuObject();
+	//constructor
+	MenuObject(int h = 0, int w = 0, std::string t = "") :
+		height(h),
+		width(w),
+		text(t) {}
 
-	void print(SDL_Renderer* rendererToPrintOn, int xPos, int yPos);
+	//destructor
+	~MenuObject();
+
+	//setters
+	void setHeight(int newValue) { height = newValue; }
+	void setWidth(int newValue) { width = newValue; }
+
+	//getters
+	int getHeight() { return height; }
+	int getWidth() { return width; }
+
+	void print(SDL_Renderer* rendererToPrintOn, int elementIndex, int elementCount) {}
 };
 

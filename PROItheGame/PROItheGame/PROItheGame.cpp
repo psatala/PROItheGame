@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "BasicFunctions.h"
+#include "Tree.h"
+#include "Macros.h"
 
 using namespace std;
 
@@ -22,13 +24,42 @@ int main()
 
 	if (init(&window, &renderer, SCREEN_HEIGHT, SCREEN_WIDTH))
 	{
-		playLevel("Levels/Level03.txt", window, renderer, SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH, TIME_BETWEEN_FRAMES);
+		//playLevel("Levels/Level03.txt", window, renderer, SCREEN_HEIGHT, SCREEN_WIDTH, PLAYER_HEIGHT, PLAYER_WIDTH, TIME_BETWEEN_FRAMES);
 		//close();
 	}
-		
-
-
 	
+
+
+
+	const int menuElementHeight = 50;
+	const int menuElementWidth = 100;
+
+	TreeElement* root = new TreeElement(&MenuObject::print, new MenuObject()); //initializing first element of the tree
+	
+	Tree* myTree = new Tree(root); //initializing tree
+
+
+	//main menu
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Play")));
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Options")));
+
+
+	myTree->goTo(0); //go to "Play"
+	
+	//level choice menu
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 1"), ID_LEVEL_1));
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 2"), ID_LEVEL_2));
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 3"), ID_LEVEL_3));
+
+	myTree->goTo(-1); //go back
+
+	myTree->goTo(1); //go to "Options"
+	
+	//options menu
+	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Controls"), ID_CONTROLS));
+
+	myTree->goTo(-1); //go back
+
 	
 
 	return 0;

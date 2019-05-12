@@ -4,19 +4,24 @@ using namespace std;
 
 TreeElement::TreeElement()
 {
-}
-
-TreeElement::TreeElement(void (MenuObject::*myFunction)(SDL_Renderer* rendererToPrintOn, int xPos, int yPos))
-{
-	ptrToPrintFunction = myFunction;
+	ptrToFather = this;
 }
 
 TreeElement::~TreeElement()
 {
 }
 
+
+const int TreeElement::returnHere()
+{
+	if (!listOfSons.empty())
+		return -1; //cannot return here
+	else
+		return returnValue;
+}
+
 void TreeElement::printTreeElement(SDL_Renderer* rendererToPrintOn)
 {
-	for (vector<MenuObject*>::iterator it = listOfSons.begin(); it != listOfSons.end(); ++it)
-		((*it)->*ptrToPrintFunction)(rendererToPrintOn, 0, 0);
+	for (unsigned int i = 0; i < listOfSons.size(); ++i)
+		(listOfSons[i]->ptrToObject->*ptrToPrintFunction)(rendererToPrintOn, i, listOfSons.size());
 }
