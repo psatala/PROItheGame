@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TreeElement.h"
+#include "BasicFunctions.h"
 
 class Tree
 {
@@ -29,7 +30,16 @@ public:
 	//returning
 	const int tryReturning();
 
+
 	//printing
 	void printTree(SDL_Renderer* rendererToPrintOn);
+
+
+	//checking input
+	int checkInput(int xMouse, int yMouse);
+
+
+	//updating
+	void update(SDL_Renderer* rendererToPrintOn);
 };
 

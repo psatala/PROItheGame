@@ -34,33 +34,70 @@ int main()
 	const int menuElementHeight = 50;
 	const int menuElementWidth = 100;
 
-	TreeElement* root = new TreeElement(&MenuObject::print, new MenuObject()); //initializing first element of the tree
+	TreeElement* root = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
 	
 	Tree* myTree = new Tree(root); //initializing tree
 
 
 	//main menu
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Play")));
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Options")));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "PLAY")));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "OPTIONS")));
 
 
 	myTree->goTo(0); //go to "Play"
 	
 	//level choice menu
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 1"), ID_LEVEL_1));
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 2"), ID_LEVEL_2));
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Level 3"), ID_LEVEL_3));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 1"), ID_LEVEL_1));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 2"), ID_LEVEL_2));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 3"), ID_LEVEL_3));
 
 	myTree->goTo(-1); //go back
 
 	myTree->goTo(1); //go to "Options"
 	
 	//options menu
-	myTree->add(new TreeElement(&MenuObject::print, new MenuObject(menuElementHeight, menuElementWidth, "Controls"), ID_CONTROLS));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "CONTROLS"), ID_CONTROLS));
 
 	myTree->goTo(-1); //go back
 
-	
+
+
+
+
+
+	bool quit = false;
+	SDL_Event myEvent;
+
+	myTree->update(renderer);
+
+	while (!quit)
+	{
+		while (SDL_PollEvent(&myEvent) != 0)
+		{
+			if (myEvent.type == SDL_QUIT)
+				quit = true;
+			else if (myEvent.type == SDL_MOUSEBUTTONDOWN)
+			{
+				int x;
+				int y;
+				SDL_GetMouseState(&x, &y);
+				int indexOfClicked = myTree->checkInput(x, y);
+				if (indexOfClicked != -1)
+				{
+					myTree->goTo(indexOfClicked);
+					myTree->update(renderer);
+				}
+			}
+			else if (myEvent.type == SDL_KEYDOWN)
+			{
+				if (myEvent.key.keysym.sym == SDLK_ESCAPE)
+				{
+					myTree->goTo(-1);
+					myTree->update(renderer);
+				}
+			}
+		}
+	}
 
 	return 0;
 }

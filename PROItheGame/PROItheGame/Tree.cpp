@@ -75,3 +75,24 @@ void Tree::printTree(SDL_Renderer* rendererToPrintOn)
 {
 	ptrToCurrentElement->printTreeElement(rendererToPrintOn);
 }
+
+
+//checking input
+
+int Tree::checkInput(int xMouse, int yMouse)
+{
+	for (unsigned int i = 0; i < ptrToCurrentElement->listOfSons.size(); ++i)
+		if (ptrToCurrentElement->listOfSons[i]->checkInput(xMouse, yMouse))
+			return i;
+	return -1;
+}
+
+
+//updating
+
+void Tree::update(SDL_Renderer* rendererToPrintOn)
+{
+	clear(rendererToPrintOn);
+	printTree(rendererToPrintOn);
+	SDL_RenderPresent(rendererToPrintOn);
+}

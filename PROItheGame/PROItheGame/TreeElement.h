@@ -11,6 +11,9 @@ class TreeElement
 	//pointer to printing function
 	void (MenuObject::*ptrToPrintFunction)(SDL_Renderer* rendererToPrintOn, int elementIndex, int elementCount);
 
+	//pointer to check if clicked function
+	bool (MenuObject::*ptrToInputCheckingFunction)(int xMouse, int yMouse);
+
 public:
 
 	MenuObject* ptrToObject;
@@ -25,8 +28,14 @@ public:
 
 	TreeElement();
 	
-	TreeElement(void (MenuObject::*myFunction)(SDL_Renderer* rendererToPrintOn, int elIndex, int elCount), MenuObject* objectToPointTo, int valueToReturn = -1) :
-		ptrToPrintFunction(myFunction),
+
+
+	TreeElement(void (MenuObject::*myPrintingFunction)(SDL_Renderer* rendererToPrintOn, int elIndex, int elCount),
+				bool (MenuObject::*myInputCheckingFunction)(int xM, int yM),
+				MenuObject* objectToPointTo, int valueToReturn = -1) :
+
+		ptrToPrintFunction(myPrintingFunction),
+		ptrToInputCheckingFunction(myInputCheckingFunction),
 		returnValue(valueToReturn),
 		ptrToFather(this),
 		ptrToObject(objectToPointTo) {}
@@ -34,6 +43,7 @@ public:
 
 
 
+	
 	//destructor
 	~TreeElement();
 
@@ -46,5 +56,10 @@ public:
 	
 	//printing
 	void printTreeElement(SDL_Renderer* rendererToPrintOn);
+
+
+	//checking input
+	bool checkInput(int xMouse, int yMouse);
+
 };
 

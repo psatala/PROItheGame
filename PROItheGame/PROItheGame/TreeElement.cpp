@@ -25,3 +25,9 @@ void TreeElement::printTreeElement(SDL_Renderer* rendererToPrintOn)
 	for (unsigned int i = 0; i < listOfSons.size(); ++i)
 		(listOfSons[i]->ptrToObject->*ptrToPrintFunction)(rendererToPrintOn, i, listOfSons.size());
 }
+
+
+bool TreeElement::checkInput(int xMouse, int yMouse)
+{
+	return (this->ptrToObject->*ptrToInputCheckingFunction)(xMouse, yMouse);
+}
