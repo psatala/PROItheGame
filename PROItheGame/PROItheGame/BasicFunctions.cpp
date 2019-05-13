@@ -5,29 +5,42 @@ using namespace std;
 bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 {
 	bool success = true;
+
+	//SDL init
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		cout << "Error - initalising SDL. SDL returned: " << SDL_GetError();
+		cout << "Error - initialising SDL. SDL returned: " << SDL_GetError() << endl;
 		success = false;
 	}
 	else
 	{
+		//window init
 		*window = SDL_CreateWindow("SpeedyBoi", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (NULL == *window)
 		{
-			cout << "Error - creating window. SDL returned: " << SDL_GetError();
+			cout << "Error - creating window. SDL returned: " << SDL_GetError() << endl;
 			success = false;
 		}
 		else
 		{
+			//renderer init
 			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_PRESENTVSYNC);
 			if (NULL == *renderer)
 			{
-				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError();
+				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError() << endl;
 				success = false;
 			}
 		}
 	}
+
+	//SDL_ttf init
+	if (TTF_Init() < 0)
+	{
+		cout << "Error - initialising SDL_ttf. SDL_ttf retrurned: " << TTF_GetError() << endl;
+		success = false;
+	}
+
+
 	return success;
 }
 
