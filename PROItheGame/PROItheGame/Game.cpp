@@ -1,8 +1,12 @@
-#include "BasicFunctions.h"
+#include "Game.h"
+
+
 
 using namespace std;
 
-bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
+
+
+bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 {
 	bool success = true;
 
@@ -15,8 +19,8 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	else
 	{
 		//window init
-		*window = SDL_CreateWindow("SpeedyBoi", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (NULL == *window)
+		window = SDL_CreateWindow("SpeedyBoi", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (NULL == window)
 		{
 			cout << "Error - creating window. SDL returned: " << SDL_GetError() << endl;
 			success = false;
@@ -24,8 +28,8 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 		else
 		{
 			//renderer init
-			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_PRESENTVSYNC);
-			if (NULL == *renderer)
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+			if (NULL == renderer)
 			{
 				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError() << endl;
 				success = false;
@@ -44,7 +48,89 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	return success;
 }
 
-void loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies, const double TIME_BETWEEN_FRAMES)
+
+
+
+void Game::initTree()
+{
+	root = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
+
+	myTree = new Tree(root); //initializing tree
+
+}
+
+
+
+void Game::buildTree()
+{
+
+
+	//size of menu element
+	const int menuElementHeight = 50;
+	const int menuElementWidth = 100;
+
+
+	//main menu
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "PLAY")));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "OPTIONS")));
+
+
+	myTree->goTo(0); //go to "Play"
+
+	//level choice menu
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 1"), ID_LEVEL_1));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 2"), ID_LEVEL_2));
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "LEVEL 3"), ID_LEVEL_3));
+
+	myTree->goTo(-1); //go back
+
+	myTree->goTo(1); //go to "Options"
+
+	//options menu
+	myTree->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(menuElementHeight, menuElementWidth, "CONTROLS"), ID_CONTROLS));
+
+	myTree->goTo(-1); //go back
+
+
+
+
+}
+
+
+
+void Game::handleMenuChoice(int functionID, const double TIME_BETWEEN_FRAMES)
+{
+	switch (functionID)
+	{
+
+	case ID_LEVEL_1:
+		playLevel("Levels/Level01", window, renderer, TIME_BETWEEN_FRAMES);
+		break;
+	
+	case ID_LEVEL_2:
+		playLevel("Levels/Level02", window, renderer, TIME_BETWEEN_FRAMES);
+		break;
+
+	case ID_LEVEL_3:
+		playLevel("Levels/Level03", window, renderer, TIME_BETWEEN_FRAMES);
+		break;
+
+	case ID_CONTROLS:
+		showControls(window, renderer);
+		break;
+
+	}
+}
+
+
+
+void Game::showControls()
+{
+
+}
+
+
+void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies, const double TIME_BETWEEN_FRAMES)
 {
 	//*myPlayer = &HumanPlayer(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	//myObstacles->push_back(&Obstacle());
@@ -124,7 +210,7 @@ void loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myOb
 	}
 }
 
-void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const double TIME_BETWEEN_FRAMES)
+void Game::playLevel(string pathToFile, const double TIME_BETWEEN_FRAMES)
 {
 	bool quit = false;
 	SDL_Event myEvent;
@@ -159,7 +245,7 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 
 
-	while (!quit)
+	while (!quit && myPlayer->getIsAlive())
 	{
 		startTime = SDL_GetTicks();
 
@@ -206,7 +292,7 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 		
 		
-		clear(renderer);
+		clear();
 		
 		//printing
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
@@ -234,8 +320,9 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 
 
-void clear(SDL_Renderer* rendererToPrintOn)
+void Game::clear()
 {
-	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0x00, 0xFF);
-	SDL_RenderClear(rendererToPrintOn);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(renderer);
 }
+

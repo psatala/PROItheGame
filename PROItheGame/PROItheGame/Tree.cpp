@@ -92,7 +92,6 @@ int Tree::checkInput(int xMouse, int yMouse)
 
 void Tree::update(SDL_Renderer* rendererToPrintOn)
 {
-	clear(rendererToPrintOn);
 	printTree(rendererToPrintOn);
 	SDL_RenderPresent(rendererToPrintOn);
 }

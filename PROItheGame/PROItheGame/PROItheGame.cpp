@@ -4,8 +4,7 @@
 #include <iostream>
 
 #include "BasicFunctions.h"
-#include "Tree.h"
-#include "Macros.h"
+
 
 using namespace std;
 
@@ -34,6 +33,7 @@ int main()
 	const int menuElementHeight = 50;
 	const int menuElementWidth = 100;
 
+
 	TreeElement* root = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
 	
 	Tree* myTree = new Tree(root); //initializing tree
@@ -61,39 +61,49 @@ int main()
 	myTree->goTo(-1); //go back
 
 
-
+	
 
 
 
 	bool quit = false;
 	SDL_Event myEvent;
 
+	clear(renderer);
 	myTree->update(renderer);
 
 	while (!quit)
 	{
 		while (SDL_PollEvent(&myEvent) != 0)
 		{
-			if (myEvent.type == SDL_QUIT)
+			if (myEvent.type == SDL_QUIT) //quit
 				quit = true;
-			else if (myEvent.type == SDL_MOUSEBUTTONDOWN)
+			else if (myEvent.type == SDL_MOUSEBUTTONDOWN) //get mouse click
 			{
 				int x;
 				int y;
-				SDL_GetMouseState(&x, &y);
+				
+				SDL_GetMouseState(&x, &y); //get mouse coordinates
+
 				int indexOfClicked = myTree->checkInput(x, y);
-				if (indexOfClicked != -1)
+				
+				if (indexOfClicked != -1) //go down
 				{
 					myTree->goTo(indexOfClicked);
+					
+					clear(renderer);
 					myTree->update(renderer);
+
 				}
 			}
 			else if (myEvent.type == SDL_KEYDOWN)
 			{
-				if (myEvent.key.keysym.sym == SDLK_ESCAPE)
+				if (myEvent.key.keysym.sym == SDLK_ESCAPE) //escape - go back
 				{
 					myTree->goTo(-1);
+
+					clear(renderer);
 					myTree->update(renderer);
+
 				}
 			}
 		}
