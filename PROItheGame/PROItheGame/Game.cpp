@@ -45,6 +45,10 @@ bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 	}
 
 
+	initTree();
+
+
+
 	return success;
 }
 
@@ -57,17 +61,13 @@ void Game::initTree()
 
 	myTree = new Tree(root); //initializing tree
 
+	buildTree();
 }
 
 
 
 void Game::buildTree()
 {
-
-
-	//size of menu element
-	const int menuElementHeight = 50;
-	const int menuElementWidth = 100;
 
 
 	//main menu
