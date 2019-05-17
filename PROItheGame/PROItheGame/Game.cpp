@@ -61,9 +61,11 @@ bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 
 void Game::initMenu()
 {
-	menuRoot = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
+	
 
-	myMenu = new Tree(menuRoot); //initializing tree
+	menuRoot = new TreeElement<MenuObject>(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
+
+	myMenu = new Tree<MenuObject>(menuRoot); //initializing tree
 
 }
 
@@ -76,8 +78,8 @@ void Game::buildMenuTree()
 
 
 	//main menu
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
+	myMenu->add(new TreeElement<MenuObject>(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
+	myMenu->add(new TreeElement<MenuObject>(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
 
 
 	myMenu->goTo(0); //go to "Play"

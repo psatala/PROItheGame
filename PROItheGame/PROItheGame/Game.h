@@ -15,7 +15,7 @@
 #include "HumanPlayer.h"
 #include "Macros.h"
 #include "Tree.h"
-
+#include "MenuObject.h"
 
 class Game
 {
@@ -23,8 +23,8 @@ class Game
 	SDL_Renderer* renderer; //renderer to print on
 
 
-	Tree* myMenu; //menu structure
-	TreeElement* menuRoot; //menu root
+	Tree<MenuObject>* myMenu; //menu structure
+	TreeElement<MenuObject>* menuRoot; //menu root
 
 	
 	const double TIME_BETWEEN_FRAMES = 0;
