@@ -1,8 +1,17 @@
-#include "BasicFunctions.h"
+///Name: Game.cpp
+///Purpose: definition of methods from the Game class
+///Author: Piotr Satala
+
+
+#include "Game.h"
+
+
 
 using namespace std;
 
-bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
+
+
+bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 {
 	bool success = true;
 
@@ -15,8 +24,8 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	else
 	{
 		//window init
-		*window = SDL_CreateWindow("SpeedyBoi", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (NULL == *window)
+		window = SDL_CreateWindow("SpeedyBoi", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		if (NULL == window)
 		{
 			cout << "Error - creating window. SDL returned: " << SDL_GetError() << endl;
 			success = false;
@@ -24,14 +33,15 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 		else
 		{
 			//renderer init
-			*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_PRESENTVSYNC);
-			if (NULL == *renderer)
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+			if (NULL == renderer)
 			{
 				cout << "Error - creaing renderer. SDL returned: " << SDL_GetError() << endl;
 				success = false;
 			}
 		}
 	}
+
 
 	//SDL_ttf init
 	if (TTF_Init() < 0)
@@ -41,18 +51,185 @@ bool init(SDL_Window** window, SDL_Renderer** renderer, const int SCREEN_HEIGHT,
 	}
 
 
+
+
 	return success;
 }
 
-void loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies, const double TIME_BETWEEN_FRAMES)
+
+
+
+void Game::initMenu()
 {
-	//*myPlayer = &HumanPlayer(0, 0, 0, 0, 0, 0, 0, 0, 0);
-	//myObstacles->push_back(&Obstacle());
+	menuRoot = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
+
+	myMenu = new Tree(menuRoot); //initializing tree
+
+}
+
+
+
+
+
+void Game::buildMenuTree()
+{
+
+
+	//main menu
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
+
+
+	myMenu->goTo(0); //go to "Play"
+
+	//level choice menu
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1"), ID_LEVEL_1));
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2"), ID_LEVEL_2));
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3"), ID_LEVEL_3));
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4"), ID_LEVEL_4));
+
+	myMenu->goTo(-1); //go back
+
+	myMenu->goTo(1); //go to "Options"
+
+	//options menu
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "CONTROLS"), ID_CONTROLS));
+
+	myMenu->goTo(-1); //go back
+
+
+
+
+}
+
+
+
+
+
+void Game::simulateMenu()
+{
+	
+	bool quit = false;
+	SDL_Event myEvent;
+
+
+	//print menu's root
+	clear();
+	myMenu->update(renderer);
+
+	while (!quit)
+	{
+		while (SDL_PollEvent(&myEvent) != 0)
+		{
+
+			//quit
+			if (myEvent.type == SDL_QUIT)
+				quit = true;
+
+
+			//get mouse click
+			else if (myEvent.type == SDL_MOUSEBUTTONDOWN)
+			{
+				int x;
+				int y;
+
+				SDL_GetMouseState(&x, &y); //get mouse coordinates
+
+				int indexOfClicked = myMenu->checkInput(x, y);
+
+				if (indexOfClicked != -1) //go down
+				{
+					myMenu->goTo(indexOfClicked);
+
+					handleMenuChoice(myMenu->tryReturning()); //try to call a function
+					
+					clear();
+					myMenu->update(renderer);
+
+				}
+			}
+
+
+			//escape - go back
+			else if (myEvent.type == SDL_KEYDOWN)
+			{
+				if (myEvent.key.keysym.sym == SDLK_ESCAPE) 
+				{
+					myMenu->goTo(-1);
+
+					clear();
+					myMenu->update(renderer);
+
+				}
+			}
+		}
+	}
+
+}
+
+
+
+
+
+void Game::handleMenuChoice(int functionID)
+{
+
+	//call a function based on value of functionID
+	switch (functionID)
+	{
+
+	case ID_LEVEL_1:
+		playLevel("Levels/Level01.txt");
+		myMenu->goTo(-1);
+		break;
+	
+	case ID_LEVEL_2:
+		playLevel("Levels/Level02.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_LEVEL_3:
+		playLevel("Levels/Level03.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_LEVEL_4:
+		playLevel("Levels/Level04.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_CONTROLS:
+		showControls();
+		myMenu->goTo(-1);
+		break;
+
+	default:
+		break;
+	}
+
+}
+
+
+
+
+
+void Game::showControls()
+{
+	return;
+}
+
+
+
+
+void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies)
+{
+
 	fstream myFile;
 	myFile.open(pathToFile);
 
 	if (!myFile.is_open())
 		throw "Unable to open file!";
+	
 	else
 	{
 		
@@ -124,7 +301,11 @@ void loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myOb
 	}
 }
 
-void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, const int SCREEN_HEIGHT, const int SCREEN_WIDTH, const int PLAYER_HEIGHT, const int PLAYER_WIDTH, const double TIME_BETWEEN_FRAMES)
+
+
+
+
+void Game::playLevel(string pathToFile)
 {
 	bool quit = false;
 	SDL_Event myEvent;
@@ -141,8 +322,12 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 	
 	//load the level
-	try { loadLevel(pathToFile, &myPlayer, &myObstacles, &myEnemies, TIME_BETWEEN_FRAMES); }
-	catch (string message) { cerr << message << endl; }
+	try { loadLevel(pathToFile, &myPlayer, &myObstacles, &myEnemies); }
+	catch (const char* message) 
+	{
+		cerr << message << endl;
+		return;
+	}
 
 
 	
@@ -159,7 +344,7 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 
 
-	while (!quit)
+	while (!quit && myPlayer->getIsAlive())
 	{
 		startTime = SDL_GetTicks();
 
@@ -206,7 +391,7 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 		
 		
-		clear(renderer);
+		clear();
 		
 		//printing
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
@@ -234,8 +419,31 @@ void playLevel(string pathToFile, SDL_Window* window, SDL_Renderer* renderer, co
 
 
 
-void clear(SDL_Renderer* rendererToPrintOn)
+
+
+void Game::clear()
 {
-	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0x00, 0xFF);
-	SDL_RenderClear(rendererToPrintOn);
+	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+	SDL_RenderClear(renderer);
+}
+
+
+
+
+
+void Game::close()
+{
+	//destroy sdl objects
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+
+
+	//set pointers to NULL
+	renderer = NULL;
+	window = NULL;
+
+
+	//quit SDL subsystems
+	TTF_Quit();
+	SDL_Quit();
 }

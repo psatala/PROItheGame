@@ -157,7 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BasicFunctions.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="MenuObject.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -169,7 +169,7 @@
     <ClCompile Include="TreeElement.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicFunctions.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="MenuObject.h" />

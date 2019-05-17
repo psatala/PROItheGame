@@ -157,22 +157,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\PROItheGame\BasicFunctions.cpp" />
     <ClCompile Include="..\PROItheGame\Enemy.cpp" />
+    <ClCompile Include="..\PROItheGame\Game.cpp" />
     <ClCompile Include="..\PROItheGame\GameObject.cpp" />
     <ClCompile Include="..\PROItheGame\HumanPlayer.cpp" />
+    <ClCompile Include="..\PROItheGame\MenuObject.cpp" />
     <ClCompile Include="..\PROItheGame\Obstacle.cpp" />
     <ClCompile Include="..\PROItheGame\Player.cpp" />
+    <ClCompile Include="..\PROItheGame\Tree.cpp" />
+    <ClCompile Include="..\PROItheGame\TreeElement.cpp" />
     <ClCompile Include="UnitTestProject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\PROItheGame\BasicFunctions.h" />
     <ClInclude Include="..\PROItheGame\Enemy.h" />
+    <ClInclude Include="..\PROItheGame\Game.h" />
     <ClInclude Include="..\PROItheGame\GameObject.h" />
     <ClInclude Include="..\PROItheGame\HumanPlayer.h" />
+    <ClInclude Include="..\PROItheGame\Macros.h" />
+    <ClInclude Include="..\PROItheGame\MenuObject.h" />
     <ClInclude Include="..\PROItheGame\Momentum.h" />
     <ClInclude Include="..\PROItheGame\Obstacle.h" />
     <ClInclude Include="..\PROItheGame\Player.h" />
+    <ClInclude Include="..\PROItheGame\Tree.h" />
+    <ClInclude Include="..\PROItheGame\TreeElement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

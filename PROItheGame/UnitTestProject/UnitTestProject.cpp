@@ -1,6 +1,6 @@
 #include <iostream>
 #include <assert.h>
-#include "../PROItheGame/BasicFunctions.h"
+#include "../PROItheGame/Game.h"
 #undef main
 
 
