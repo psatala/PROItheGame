@@ -7,6 +7,4 @@
 
 #define ID_LEVEL_3 3
 
-#define ID_LEVEL_4 4
-
 #define ID_CONTROLS 101

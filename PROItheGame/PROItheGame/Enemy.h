@@ -8,11 +8,6 @@ class Enemy :
 	public Player
 {
 
-	//auxiliary variable for behaveBounce function
-	//determines wether or not the enemy's sides have made contact with anything
-	bool isAfterFirstBounce = false;
-
-
 	//pointer to behaviour function
 	void (Enemy::*ptrToBehaviourFunction)();
 
