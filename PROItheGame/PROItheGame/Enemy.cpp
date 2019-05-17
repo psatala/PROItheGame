@@ -97,7 +97,6 @@ void Enemy::behaveJump()
 
 void Enemy::behaveBounce()
 {
-	static bool isAfterFirstBounce = false;
 	if (contact[RIGHT])
 	{
 		moveLeft();
