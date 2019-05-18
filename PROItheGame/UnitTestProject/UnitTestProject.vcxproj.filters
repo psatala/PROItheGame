@@ -33,12 +33,6 @@
     <ClCompile Include="..\PROItheGame\HumanPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\PROItheGame\Tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\PROItheGame\TreeElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\PROItheGame\MenuObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

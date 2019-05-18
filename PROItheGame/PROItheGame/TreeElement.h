@@ -2,21 +2,15 @@
 
 #include <vector>
 
-#include "MenuObject.h"
 
+template <class T>
 class TreeElement
 {
 	const int returnValue = -1;
-
-	//pointer to printing function
-	void (MenuObject::*ptrToPrintFunction)(SDL_Renderer* rendererToPrintOn, int elementIndex, int elementCount);
-
-	//pointer to check if clicked function
-	bool (MenuObject::*ptrToInputCheckingFunction)(int xMouse, int yMouse);
-
+	
 public:
 
-	MenuObject* ptrToObject;
+	T* ptrToObject;
 
 	TreeElement* ptrToFather;
 
@@ -30,12 +24,7 @@ public:
 	
 
 
-	TreeElement(void (MenuObject::*myPrintingFunction)(SDL_Renderer* rendererToPrintOn, int elIndex, int elCount),
-				bool (MenuObject::*myInputCheckingFunction)(int xM, int yM),
-				MenuObject* objectToPointTo, int valueToReturn = -1) :
-
-		ptrToPrintFunction(myPrintingFunction),
-		ptrToInputCheckingFunction(myInputCheckingFunction),
+	TreeElement(T* objectToPointTo = NULL, int valueToReturn = -1) :
 		returnValue(valueToReturn),
 		ptrToFather(this),
 		ptrToObject(objectToPointTo) {}
@@ -52,14 +41,38 @@ public:
 	//returning from menu
 	const int returnHere();
 
-	
-	
-	//printing
-	void printTreeElement(SDL_Renderer* rendererToPrintOn);
-
-
-	//checking input
-	bool checkInput(int xMouse, int yMouse);
-
 };
+
+
+
+
+template <class T>
+TreeElement<T>::TreeElement()
+{
+	ptrToFather = this;
+}
+
+
+
+template <class T>
+TreeElement<T>::~TreeElement()
+{
+	//free memory
+	delete ptrToObject;
+
+	//clear vector
+	while (!listOfSons.empty())
+		listOfSons.pop_back();
+}
+
+
+
+template <class T>
+const int TreeElement<T>::returnHere()
+{
+	if (!listOfSons.empty())
+		return -1; //cannot return here
+	else
+		return returnValue;
+}
 

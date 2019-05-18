@@ -164,8 +164,6 @@
     <ClCompile Include="..\PROItheGame\MenuObject.cpp" />
     <ClCompile Include="..\PROItheGame\Obstacle.cpp" />
     <ClCompile Include="..\PROItheGame\Player.cpp" />
-    <ClCompile Include="..\PROItheGame\Tree.cpp" />
-    <ClCompile Include="..\PROItheGame\TreeElement.cpp" />
     <ClCompile Include="UnitTestProject.cpp" />
   </ItemGroup>
   <ItemGroup>

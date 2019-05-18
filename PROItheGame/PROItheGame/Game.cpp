@@ -61,9 +61,9 @@ bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 
 void Game::initMenu()
 {
-	menuRoot = new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject()); //initializing first element of the tree
+	menuRoot = new TreeElement<MenuObject>(new MenuObject()); //initializing first element of the tree
 
-	myMenu = new Tree(menuRoot); //initializing tree
+	myMenu = new Tree<MenuObject>(menuRoot); //initializing tree
 
 }
 
@@ -76,22 +76,22 @@ void Game::buildMenuTree()
 
 
 	//main menu
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
 
 
 	myMenu->goTo(0); //go to "Play"
 
 	//level type choice menu
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS")));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS")));
 
 	myMenu->goTo(0); //go to "Dev Levels"
 
 	//level choice menu
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1"), ID_LEVEL_1));
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2"), ID_LEVEL_2));
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3"), ID_LEVEL_3));
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4"), ID_LEVEL_4));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1"), ID_LEVEL_1));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2"), ID_LEVEL_2));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3"), ID_LEVEL_3));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4"), ID_LEVEL_4));
 
 	//go back
 	myMenu->goTo(-1);
@@ -101,7 +101,7 @@ void Game::buildMenuTree()
 	myMenu->goTo(1); //go to "Options"
 
 	//options menu
-	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "CONTROLS"), ID_CONTROLS));
+	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "CONTROLS"), ID_CONTROLS));
 
 	myMenu->goTo(-1); //go back
 
@@ -110,6 +110,28 @@ void Game::buildMenuTree()
 
 }
 
+
+
+
+int Game::checkMenuInput(int x, int y)
+{
+	for (unsigned int i = 0; i < myMenu->ptrToCurrentElement->listOfSons.size(); ++i)
+		if (myMenu->ptrToCurrentElement->listOfSons[i]->ptrToObject->checkIfClicked(x, y))
+			return i;
+	return -1;
+}
+
+
+
+void Game::updateMenu()
+{
+	//printing
+	for (unsigned int i = 0; i < myMenu->ptrToCurrentElement->listOfSons.size(); ++i)
+		myMenu->ptrToCurrentElement->listOfSons[i]->ptrToObject->print(renderer, i, myMenu->ptrToCurrentElement->listOfSons.size());
+	
+	//updating renderer
+	SDL_RenderPresent(renderer);
+}
 
 
 
@@ -123,7 +145,7 @@ void Game::simulateMenu()
 
 	//print menu's root
 	clear();
-	myMenu->update(renderer);
+	updateMenu();
 
 	while (!quit)
 	{
@@ -143,7 +165,7 @@ void Game::simulateMenu()
 
 				SDL_GetMouseState(&x, &y); //get mouse coordinates
 
-				int indexOfClicked = myMenu->checkInput(x, y);
+				int indexOfClicked = checkMenuInput(x, y);
 
 				if (indexOfClicked != -1) //go down
 				{
@@ -152,7 +174,7 @@ void Game::simulateMenu()
 					handleMenuChoice(myMenu->tryReturning()); //try to call a function
 					
 					clear();
-					myMenu->update(renderer);
+					updateMenu();
 
 				}
 			}
@@ -166,7 +188,7 @@ void Game::simulateMenu()
 					myMenu->goTo(-1);
 
 					clear();
-					myMenu->update(renderer);
+					updateMenu();
 
 				}
 			}
@@ -418,7 +440,6 @@ void Game::playLevel(string pathToFile)
 	allObjects.insert(allObjects.end(), auxiliaryVector.begin(), auxiliaryVector.end());
 
 
-
 	Uint32 startTime;
 	Uint32 endTime;
 	Uint32 delta;
@@ -501,6 +522,27 @@ void Game::playLevel(string pathToFile)
 		printText("Game Over", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, { 0xFF, 0xFF, 0x00 });
 	
 	waitForKeypress();
+
+
+
+	//freeing memory
+	delete myPlayer;
+
+	//free vector of enemies
+	while (!myEnemies.empty())
+	{
+		delete myEnemies.back();
+		myEnemies.pop_back();
+	}
+
+	//free vector of obstacles
+	while (!myObstacles.empty())
+	{
+		delete myObstacles.back();
+		myObstacles.pop_back();
+	}
+
+
 }
 
 
@@ -520,6 +562,9 @@ void Game::clear()
 
 void Game::close()
 {
+	//free menu objects
+	delete myMenu;
+
 	//destroy sdl objects
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);

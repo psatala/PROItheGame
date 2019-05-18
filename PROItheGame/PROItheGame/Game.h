@@ -15,6 +15,7 @@
 #include "HumanPlayer.h"
 #include "Macros.h"
 #include "Tree.h"
+#include "MenuObject.h"
 
 
 class Game
@@ -23,8 +24,8 @@ class Game
 	SDL_Renderer* renderer; //renderer to print on
 
 
-	Tree* myMenu; //menu structure
-	TreeElement* menuRoot; //menu root
+	Tree<MenuObject>* myMenu; //menu structure
+	TreeElement<MenuObject>* menuRoot; //menu root
 
 	
 	const double TIME_BETWEEN_FRAMES = 0;
@@ -50,6 +51,16 @@ class Game
 
 	///function responsible for building menu tree
 	void buildMenuTree();
+
+
+	///function responsible for handling user input whilst in menu
+	///parameters are: x and y position of mouse click
+	///function returns index of clicked element or -1, if no element was clicked
+	int checkMenuInput(int x, int y);
+
+
+	///function responsible for updating menu - printing its content and updating renderer
+	void updateMenu();
 
 
 	///function responsible for showing the game's controls
