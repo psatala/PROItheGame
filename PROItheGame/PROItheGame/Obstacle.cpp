@@ -22,7 +22,7 @@ void Obstacle::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 	if(isItFinish)
 		SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0xFF, 0xFF);
 	else if(canItKill)
-		SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
+		SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0xA5, 0x00, 0xFF);
 	else
 		SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(rendererToPrintOn, &playerRect);

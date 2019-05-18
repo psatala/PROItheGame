@@ -13,6 +13,7 @@ class MenuObject :
 	std::string text;
 	
 	const int scaleTextLengthBy = 20;
+
 public:
 	void OverrideMe() {}
 

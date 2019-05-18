@@ -29,7 +29,7 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 
 	//calculating x and y coordinates
 	xCoordinate = (RENDERER_WIDTH - objectWidth) / 2;
-	yCoordinate = RENDERER_HEIGHT / 2 + 2 * objectHeight * (elementIndex - elementCount / 2);
+	yCoordinate = (double)RENDERER_HEIGHT / 2 + 2 * (double)objectHeight * ((double)elementIndex - (double)elementCount / 2);
 
 	//applying
 	SDL_Rect myRect = { (int)xCoordinate, (int)yCoordinate, objectWidth, objectHeight};
@@ -46,7 +46,14 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 	SDL_Rect innerRect = { (int)xCoordinate + objectWidth /2 - newWidth / 4, (int)yCoordinate + objectHeight / 4, newWidth / 2, objectHeight / 2 };
 	SDL_RenderCopy(rendererToPrintOn, Message, NULL, &innerRect);
 	
+	SDL_DestroyTexture(Message);
+	Message = NULL;
 
+	SDL_FreeSurface(surfaceMessage);
+	surfaceMessage = NULL;
+
+	TTF_CloseFont(myFont);
+	myFont = NULL;
 }
 
 

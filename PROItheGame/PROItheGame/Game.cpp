@@ -82,13 +82,21 @@ void Game::buildMenuTree()
 
 	myMenu->goTo(0); //go to "Play"
 
+	//level type choice menu
+	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS")));
+
+	myMenu->goTo(0); //go to "Dev Levels"
+
 	//level choice menu
 	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1"), ID_LEVEL_1));
 	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2"), ID_LEVEL_2));
 	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3"), ID_LEVEL_3));
 	myMenu->add(new TreeElement(&MenuObject::print, &MenuObject::checkIfClicked, new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4"), ID_LEVEL_4));
 
-	myMenu->goTo(-1); //go back
+	//go back
+	myMenu->goTo(-1);
+	myMenu->goTo(-1);
+
 
 	myMenu->goTo(1); //go to "Options"
 
@@ -215,7 +223,84 @@ void Game::handleMenuChoice(int functionID)
 
 void Game::showControls()
 {
-	return;
+	clear();
+	const int noRows = 10;
+	const int scaleBy = 20;
+	const char* tableOfContents[] = {
+		"Controls:",
+		"W - jump",
+		"A - move left",
+		"D - move right",
+		"arrows - teleport",
+		"",
+		"In some levels not every action",
+		"may be possible",
+		"",
+		"Press any key to continue..."
+	};
+
+	for (int i = 0; i < noRows; ++i)
+	{
+		string temporary = (string)tableOfContents[i];
+		printText(temporary, { 0, SCREEN_HEIGHT * i / noRows, (int)temporary.size() * scaleBy, SCREEN_HEIGHT / noRows }, { 0xFF, 0xFF, 0xFF });
+	}
+		
+
+	waitForKeypress();
+}
+
+
+
+
+void Game::printText(std::string text, SDL_Rect myRect, SDL_Color myColor)
+{
+	TTF_Font* myFont = TTF_OpenFont("Fonts/OpenSans-Semibold.ttf", 500);
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(myFont, text.c_str(), myColor);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+	
+	SDL_RenderCopy(renderer, Message, NULL, &myRect);
+	SDL_RenderPresent(renderer);
+
+	//Free
+
+	SDL_DestroyTexture(Message);
+	Message = NULL;
+
+	SDL_FreeSurface(surfaceMessage);
+	surfaceMessage = NULL;
+
+	TTF_CloseFont(myFont);
+	myFont = NULL;
+}
+
+
+
+
+void Game::waitForKeypress()
+{
+	bool quit = false;
+	SDL_Event myEvent;
+
+	Uint32 startTime;
+	Uint32 endTime;
+	Uint32 delta;
+
+	while (!quit)
+	{
+		startTime = SDL_GetTicks();
+
+		while (SDL_PollEvent(&myEvent))
+		{
+			if (myEvent.type == SDL_QUIT || myEvent.type == SDL_KEYDOWN)
+				quit = true;
+		}
+
+		//waiting for the next frame
+		endTime = SDL_GetTicks();
+		delta = endTime - startTime;
+		if (delta < (unsigned int)TIME_BETWEEN_FRAMES)
+			SDL_Delay((unsigned int)TIME_BETWEEN_FRAMES - delta);
+	}
 }
 
 
@@ -311,11 +396,6 @@ void Game::playLevel(string pathToFile)
 	bool quit = false;
 	SDL_Event myEvent;
 
-	const double x = 10 / TIME_BETWEEN_FRAMES;
-	const double y = -14 / TIME_BETWEEN_FRAMES;
-	const double g = 0.4 / (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
-	const int tDist = 200;
-	const unsigned int tTime = 1000;
 
 	HumanPlayer* myPlayer;
 	vector <Obstacle*> myObstacles;
@@ -414,7 +494,13 @@ void Game::playLevel(string pathToFile)
 	}
 
 
+	if (myPlayer->getHasFinished())
+		printText("Level Completed", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, { 0xFF, 0xFF, 0x00 });
 
+	else if(!myPlayer->getIsAlive())
+		printText("Game Over", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, { 0xFF, 0xFF, 0x00 });
+	
+	waitForKeypress();
 }
 
 
