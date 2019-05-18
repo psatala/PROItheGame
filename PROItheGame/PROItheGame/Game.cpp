@@ -240,6 +240,7 @@ void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*
 		unsigned int width;
 		unsigned int height;
 		bool canKill;
+		bool isFinish;
 		double xSpeed;
 		double ySpeed;
 		double gForce;
@@ -272,10 +273,10 @@ void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*
 			case 'O': //obstacle
 
 				//reading necessary data from file
-				myFile >> canKill;
+				myFile >> canKill >> isFinish;
 
 				//adding object to vector
-				myObstacles->push_back(new Obstacle(xPos, yPos, width, height, canKill));
+				myObstacles->push_back(new Obstacle(xPos, yPos, width, height, canKill, isFinish));
 				break;
 
 			case 'E': //enemy
@@ -344,7 +345,7 @@ void Game::playLevel(string pathToFile)
 
 
 
-	while (!quit && myPlayer->getIsAlive())
+	while (!quit && myPlayer->getIsAlive() && !myPlayer->getHasFinished())
 	{
 		startTime = SDL_GetTicks();
 

@@ -4,36 +4,45 @@
 
 #pragma once
 
+template <typename T1, typename T2, typename T3>
 class Momentum
 {
-	double xVelocity;
-	double yVelocity;
-	double gForce;
+	T1 xVelocity;
+	T2 yVelocity;
+	T3 gForce;
 	
 
 public:
-	///constructor
-	Momentum(double g = 0, double Vx = 0, double Vy = 0) : gForce(g), xVelocity(Vx), yVelocity(Vy) {};
 	
+	///constructor
+	Momentum(T3 g = 0, T1 Vx = 0, T2 Vy = 0) : gForce(g), xVelocity(Vx), yVelocity(Vy) {};
+	
+
 	///copy constructor
 	Momentum(const Momentum& other) : xVelocity(other.xVelocity),
 	                                  yVelocity(other.yVelocity),
 		                              gForce(other.gForce) {};
 
 
+
 	///destructor
 	~Momentum() {};
 	
+
+
+
 	///setters
-	void setXVelocity(double newValue) { xVelocity = newValue; }
-	void setYVelocity(double newValue) { yVelocity = newValue; }
-	void setGForce(double newValue) { gForce = newValue; }
+	void setXVelocity(T1 newValue) { xVelocity = newValue; }
+	void setYVelocity(T2 newValue) { yVelocity = newValue; }
+	void setGForce(T3 newValue) { gForce = newValue; }
 	
 
+
+
 	///getters
-	double getXVelocity() { return xVelocity; }
-	double getYVelocity() { return yVelocity; }
-	double getGForce() { return gForce; }
+	T1 getXVelocity() { return xVelocity; }
+	T2 getYVelocity() { return yVelocity; }
+	T3 getGForce() { return gForce; }
 	
 
 	///assingment operator

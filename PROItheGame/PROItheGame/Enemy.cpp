@@ -26,7 +26,7 @@ void Enemy::checkCollision(HumanPlayer* myPlayer)
 	if (contactWithThisObject[UP] = myPlayer->checkCollisionSide(this, DOWN))
 	{
 		//changing player's velocity in y to 0
-		Momentum* newMomentum = myPlayer->getPlayerMomentum();
+		Momentum<double, double, double>* newMomentum = myPlayer->getPlayerMomentum();
 		newMomentum->setYVelocity(0);
 		myPlayer->setPlayerMomentum(*newMomentum);
 		

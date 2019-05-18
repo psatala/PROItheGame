@@ -18,7 +18,10 @@ void Obstacle::print(SDL_Renderer* rendererToPrintOn, Player* myPlayer)
 	int playerMoveY = (int)myPlayer->getYCoordinate() - (RENDERER_HEIGHT - myPlayer->getPlayerHeight()) / 2;
 
 	SDL_Rect playerRect = { (int)xCoordinate - playerMoveX, (int)yCoordinate - playerMoveY, objectWidth, objectHeight };
-	if(canItKill)
+	
+	if(isItFinish)
+		SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0x00, 0xFF, 0xFF);
+	else if(canItKill)
 		SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
 	else
 		SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0xFF, 0xFF, 0xFF);

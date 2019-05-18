@@ -150,8 +150,18 @@ void Player::checkCollision(Obstacle* obstacle)
 
 	//check if contact with the obstacle killed the player
 	for (int i = 0; i < 4; i++)
-		if (obstacle->getCanItKill() && contactWithThisObject[i])
-			isAlive = false;
+	{
+		if (contactWithThisObject[i])
+		{
+			if (obstacle->getIsItFinish())
+				hasFinished = true;
+			else if (obstacle->getCanItKill())
+				isAlive = false;
+		}
+		
+
+	}
+		
 
 }
 

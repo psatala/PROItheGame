@@ -25,8 +25,9 @@ class Player :
 	const int teleportDistance = 0;
 	const unsigned int timeBetweenTeleports = 0;
 
-	Momentum playerMomentum;
-	bool isAlive;
+	Momentum<double, double, double> playerMomentum;
+	bool isAlive = true;
+	bool hasFinished = false;
 	Uint32 lastTeleportTime = 0; //time of the last teleport
 
 
@@ -90,14 +91,16 @@ public:
 	///getters
 	double getXConstant() { return xConstant; }
 	double getYConstant() { return yConstant; }
-	Momentum* getPlayerMomentum() { return &playerMomentum; }
+	Momentum<double, double, double>* getPlayerMomentum() { return &playerMomentum; }
 	int getPlayerHeight() { return PLAYER_HEIGHT; }
 	int getPlayerWidth() { return PLAYER_WIDTH; }
 	bool getIsAlive() { return isAlive; }
+	bool getHasFinished() { return hasFinished; }
 
 	///setters
+	void setPlayerMomentum(Momentum<double, double, double> newValue) { playerMomentum = newValue; }
 	void setIsAlive(bool newValue) { isAlive = newValue; }
-	void setPlayerMomentum(Momentum newValue) { playerMomentum = newValue; }
+	void setHasFinished(bool newValue) { hasFinished = newValue; }
 
 
 

@@ -10,14 +10,18 @@ class Player;
 class Obstacle :
 	public GameObject
 {
+
 	bool canItKill;
+	bool isItFinish;
+
 public:
 	///function overriding abstract function from base class
 	void OverrideMe() {}
 
 	///constructor
-	Obstacle(int x = 0, int y = 0, int w = 0, int h = 0, bool canKill = false):
-		canItKill(canKill) 
+	Obstacle(int x = 0, int y = 0, int w = 0, int h = 0, bool canKill = false, bool isFinish = false):
+		canItKill(canKill),
+		isItFinish(isFinish)
 	{
 		xCoordinate = x;
 		yCoordinate = y;
@@ -34,8 +38,10 @@ public:
 
 	///getters
 	bool getCanItKill() { return canItKill; }
+	bool getIsItFinish() { return isItFinish; }
 
 	///setters
 	void setCanItKill(bool newValue) { canItKill = newValue; }
+	void setIsItFinish(bool newValue) { isItFinish = newValue; }
 };
 
