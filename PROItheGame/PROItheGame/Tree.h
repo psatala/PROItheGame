@@ -1,3 +1,7 @@
+///Name: Tree.h
+///Purpose: declaration and definition of tree template
+///Author: Piotr Satala
+
 #pragma once
 
 #include "TreeElement.h"
@@ -7,32 +11,67 @@ class Tree
 {
 	
 public:
+	//pointer to current element
 	TreeElement<T>* ptrToCurrentElement;
 
 
-	//constructor
+
+	//constructing
+
+	///constructor
+	///parameters are: pointer to first element of tree
 	Tree(TreeElement<T>* firstElement = NULL):
 		ptrToCurrentElement(firstElement) {}
 
 
-	//destructor
+
+
+
+	//destroying
+
+	///destructor
 	~Tree();
 
-	//auxiliary function
+	///auxiliary function called in destructor responsible for freeing the memory of given element of tree
+	///parameters are: pointer to element of tree
 	void freeMemory(TreeElement<T>* ptrToSomeElement);
 
 
+
+
+
 	//moving
+
+	///function responsible for moving the current element to one of its sons or its father
+	///parameters are: index of son to go to or -1, if the target is father
 	void goTo(int indexOfSon);
+
+	///function responsible for moving the current element to a new element of tree
+	///prameters are: pointer to new element of tree
 	void goTo(TreeElement<T>* newCurrentElement);
 
 
+
+
+
 	//adding new element
+	
+	///function responsible for adding new element to the given element of tree
+	///parameters are: pointer to element to which we will be adding, pointer to new element (to be added)
 	void add(TreeElement<T>* addHere, TreeElement<T>* newElement);
+
+	///function responsible for adding new element to current element
+	///parameters are: pointer to new element (to be added)
 	void add(TreeElement<T>* newElement);
 
 
+
+
+
 	//returning
+	
+	///function responsible for getting the return value of current element
+	///function returns the retun value of current element
 	const int tryReturning();
 
 
@@ -62,8 +101,11 @@ Tree<T>::~Tree()
 template <class T>
 void Tree<T>::freeMemory(TreeElement<T>* ptrToSomeElement)
 {
+	//calling this function recurrently for all of the given element's sons
 	for (unsigned int i = 0; i < ptrToSomeElement->listOfSons.size(); ++i)
 		freeMemory(ptrToSomeElement->listOfSons[i]);
+
+	//freeing the given element
 	delete ptrToSomeElement;
 }
 
@@ -75,12 +117,15 @@ void Tree<T>::freeMemory(TreeElement<T>* ptrToSomeElement)
 template <class T>
 void Tree<T>::goTo(int indexOfSon)
 {
+	
 	//go to one of the sons
 	if (indexOfSon >= 0 && indexOfSon < (int)ptrToCurrentElement->listOfSons.size())
 		ptrToCurrentElement = ptrToCurrentElement->listOfSons[indexOfSon];
+	
 	//go back to father
 	else if (-1 == indexOfSon)
 		ptrToCurrentElement = ptrToCurrentElement->ptrToFather;
+
 }
 
 

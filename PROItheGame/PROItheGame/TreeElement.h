@@ -1,3 +1,7 @@
+///Name: TreeElement.h
+///Purpose: declaration and definition of element of tree template
+///Author: Piotr Satala
+
 #pragma once
 
 #include <vector>
@@ -6,24 +10,25 @@
 template <class T>
 class TreeElement
 {
-	const int returnValue = -1;
+	const int returnValue = -1; //return value of element
 	
 public:
 
-	T* ptrToObject;
+	T* ptrToObject; //pointer to object contained by element of tree
 
-	TreeElement* ptrToFather;
+	TreeElement* ptrToFather; //pointer to father of element
 
-	std::vector<TreeElement*> listOfSons;
+	std::vector<TreeElement*> listOfSons; //vector of pointers to all sons of given element
 
 	
 	
-	//constructors
+	//constructing
 
+	///default constructor
 	TreeElement();
-	
 
-
+	///parametrised constructor
+	///paramters are: pointer to an object element will be containing, return value of the element
 	TreeElement(T* objectToPointTo = NULL, int valueToReturn = -1) :
 		returnValue(valueToReturn),
 		ptrToFather(this),
@@ -33,12 +38,17 @@ public:
 
 
 	
-	//destructor
+	//destroying
+
+	///destructor
 	~TreeElement();
 
 	
 	
 	//returning from menu
+
+	///function responsible for getting the return value of element
+	///function returns the return value of the element
 	const int returnHere();
 
 };
@@ -49,7 +59,7 @@ public:
 template <class T>
 TreeElement<T>::TreeElement()
 {
-	ptrToFather = this;
+	ptrToFather = this; //set element's father to be the element
 }
 
 

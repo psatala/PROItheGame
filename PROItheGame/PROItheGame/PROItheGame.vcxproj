@@ -163,7 +163,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Obstacle.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,3 +1,7 @@
+///Name: MenuObject.cpp
+///Purpose: definition of methods from MenuObject class
+///Author: Piotr Satala
+
 #include "MenuObject.h"
 
 
@@ -60,6 +64,6 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 
 bool MenuObject::checkIfClicked(int xMouse, int yMouse)
 {
-	return xCoordinate < xMouse && xCoordinate + objectWidth > xMouse
-		&& yCoordinate < yMouse && yCoordinate + objectHeight > yMouse;
+	return xCoordinate < xMouse && xCoordinate + objectWidth > xMouse     //check x coordinate
+		&& yCoordinate < yMouse && yCoordinate + objectHeight > yMouse;   //check y coordinate
 }
