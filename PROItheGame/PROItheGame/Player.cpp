@@ -5,19 +5,30 @@
 #include "Player.h"
 
 
-Player::Player()
-{
 
+
+//private methods
+
+bool Player::checkIfInsideAny(std::vector <GameObject*> myVector)
+{
+	bool result = false;
+	for (std::vector <GameObject*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+		result |= checkIfInsideOneObject(*it);
+	return result;
 }
 
 
 
-Player::~Player()
+bool Player::checkIfInsideOneObject(GameObject* obstacle)
 {
-
+	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
+		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();
 }
 
 
+
+
+//protected methods
 
 void Player::jump()
 {
@@ -73,10 +84,13 @@ void Player::teleport(Direction dir, std::vector<GameObject*> myVector)
 
 
 
+
+//public methods
+
 void Player::calculateNextPosition(const double timeDifference)
 {
 	//updating vertical velocity
-	if(!contact[DOWN])
+	if((playerMomentum.getGForce() > 0 && !contact[DOWN]) || (playerMomentum.getGForce() < 0 && !contact[UP]))
 		playerMomentum.setYVelocity(playerMomentum.getYVelocity() + playerMomentum.getGForce() * timeDifference);
 
 	//updating vertical position
@@ -92,20 +106,6 @@ void Player::calculateNextPosition(const double timeDifference)
 
 
 
-void Player::print(SDL_Renderer* rendererToPrintOn)
-{
-	if (!isAlive) //quit if the player's dead
-		return;
-
-	int RENDERER_HEIGHT;
-	int RENDERER_WIDTH;
-	SDL_GetRendererOutputSize(rendererToPrintOn, &RENDERER_WIDTH, &RENDERER_HEIGHT);
-
-	SDL_Rect playerRect = { (RENDERER_WIDTH - PLAYER_WIDTH) / 2, (RENDERER_HEIGHT - PLAYER_HEIGHT) / 2, objectWidth, objectHeight };
-	SDL_SetRenderDrawColor(rendererToPrintOn, 0x00, 0xFF, 0x00, 0xFF);
-	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
-
-}
 
 
 
@@ -148,6 +148,7 @@ void Player::checkCollision(Obstacle* obstacle)
 	for (int i = 0; i < 4; i++)
 		contact[i] |= contactWithThisObject[i];
 
+
 	//check if contact with the obstacle killed the player
 	for (int i = 0; i < 4; i++)
 	{
@@ -167,56 +168,3 @@ void Player::checkCollision(Obstacle* obstacle)
 
 
 
-bool Player::checkCollisionSide(GameObject* obstacle, Direction dir)
-{
-	switch (dir)
-	{
-	case UP:
-		if (round(obstacle->getXCoordinate()) < round(xCoordinate + objectWidth) && round(xCoordinate) < round(obstacle->getXCoordinate() + obstacle->getObjectWidth())) //check x
-			if (round(yCoordinate) < round(obstacle->getYCoordinate() + obstacle->getObjectHeight()) && round(yCoordinate + objectHeight) > round(obstacle->getYCoordinate() + obstacle->getObjectHeight())) //check y
-				return true;
-		return false;
-		break;
-	
-	case DOWN:
-		if (round(obstacle->getXCoordinate()) < round(xCoordinate + objectWidth) && round(xCoordinate) < round(obstacle->getXCoordinate() + obstacle->getObjectWidth())) //check x
-			if (round(yCoordinate + objectHeight) > round(obstacle->getYCoordinate()) && round(yCoordinate) < round(obstacle->getYCoordinate())) //check y
-				return true;
-		return false;
-		break;
-	
-	case LEFT:
-		if (round(obstacle->getYCoordinate()) < round(yCoordinate + objectHeight) && round(yCoordinate) < round(obstacle->getYCoordinate() + obstacle->getObjectHeight())) //check y
-			if (round(xCoordinate) < round(obstacle->getXCoordinate() + obstacle->getObjectWidth()) && round(xCoordinate + objectWidth) > round(obstacle->getXCoordinate() + obstacle->getObjectWidth())) //check x
-				return true;
-		return false;
-		break;
-	
-	case RIGHT:
-		if (round(obstacle->getYCoordinate()) < round(yCoordinate + objectHeight) && round(yCoordinate) < round(obstacle->getYCoordinate() + obstacle->getObjectHeight())) //check y
-			if (round(xCoordinate + objectWidth) > round(obstacle->getXCoordinate()) && round(xCoordinate) < round(obstacle->getXCoordinate())) //check x
-				return true;
-		return false;
-		break;
-	default:
-		return false;
-	}
-}
-
-
-
-bool Player::checkIfInsideAny(std::vector <GameObject*> myVector)
-{
-	bool result = false;
-	for (std::vector <GameObject*>::iterator it = myVector.begin(); it != myVector.end(); ++it)
-		result |= checkIfInsideOneObject(*it);
-	return result;
-}
-
-
-
-bool Player::checkIfInsideOneObject(GameObject* obstacle)
-{
-	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
-		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();
-}

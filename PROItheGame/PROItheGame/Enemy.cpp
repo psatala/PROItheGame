@@ -1,19 +1,76 @@
+///Name: Enemy.cpp
+///Purpose: definition of methods from Enemy class
+///Author: Piotr Satala
+
 #include "Enemy.h"
 
 
 
-Enemy::Enemy()
+
+//behaviour funtions
+
+void Enemy::behaveJump()
 {
-	Player();
+	jump();
 }
 
 
 
-Enemy::~Enemy()
+void Enemy::behaveBounce()
 {
+	if (contact[RIGHT])
+	{
+		moveLeft();
+		isAfterFirstBounce = true;
+	}
+	else if (contact[LEFT])
+	{
+		moveRight();
+		isAfterFirstBounce = true;
+	}
+	else if (!isAfterFirstBounce)
+		moveLeft();
 }
 
 
+
+void Enemy::behaveTeleportUP()
+{
+	//placeholder solution
+	teleport(UP, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportDOWN()
+{
+	//placeholder solution
+	teleport(DOWN, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportLEFT()
+{
+	//placeholder solution
+	teleport(LEFT, std::vector<GameObject*>());
+}
+
+
+
+void Enemy::behaveTeleportRIGHT()
+{
+	//placeholder solution
+	teleport(RIGHT, std::vector<GameObject*>());
+}
+
+
+
+
+
+
+
+//other
 
 void Enemy::checkCollision(HumanPlayer* myPlayer)
 {
@@ -66,79 +123,3 @@ void Enemy::checkCollision(HumanPlayer* myPlayer)
 }
 
 
-
-void Enemy::print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer)
-{
-	if (!this->getIsAlive()) //quit if the enemy's dead
-		return;
-
-	int RENDERER_HEIGHT;
-	int RENDERER_WIDTH;
-	SDL_GetRendererOutputSize(rendererToPrintOn, &RENDERER_WIDTH, &RENDERER_HEIGHT);
-
-	int playerMoveX = (int)myPlayer->getXCoordinate() - (RENDERER_WIDTH - myPlayer->getPlayerWidth()) / 2;
-	int playerMoveY = (int)myPlayer->getYCoordinate() - (RENDERER_HEIGHT - myPlayer->getPlayerHeight()) / 2;
-
-	SDL_Rect playerRect = { (int)xCoordinate - playerMoveX, (int)yCoordinate - playerMoveY, objectWidth, objectHeight };
-	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0x00, 0x00, 0xFF);
-	SDL_RenderFillRect(rendererToPrintOn, &playerRect);
-}
-
-
-
-
-
-//behaviour funtions
-
-void Enemy::behaveJump()
-{
-	jump();
-}
-
-void Enemy::behaveBounce()
-{
-	if (contact[RIGHT])
-	{
-		moveLeft();
-		isAfterFirstBounce = true;
-	}
-	else if (contact[LEFT])
-	{
-		moveRight();
-		isAfterFirstBounce = true;
-	}
-	else if (!isAfterFirstBounce)
-		moveLeft();
-}
-
-
-
-void Enemy::behaveTeleportUP()
-{
-	//placeholder solution
-	teleport(UP, std::vector<GameObject*>());
-}
-
-
-
-void Enemy::behaveTeleportDOWN()
-{
-	//placeholder solution
-	teleport(DOWN, std::vector<GameObject*>());
-}
-
-
-
-void Enemy::behaveTeleportLEFT()
-{
-	//placeholder solution
-	teleport(LEFT, std::vector<GameObject*>());
-}
-
-
-
-void Enemy::behaveTeleportRIGHT()
-{
-	//placeholder solution
-	teleport(RIGHT, std::vector<GameObject*>());
-}

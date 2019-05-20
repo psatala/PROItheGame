@@ -5,7 +5,6 @@
 #pragma once
 
 #include <vector>
-#include <math.h>
 
 #include "Obstacle.h"
 #include "Momentum.h"
@@ -18,93 +17,37 @@ class Obstacle;
 class Player :
 	public GameObject
 {
-	//Constants for velocity
+	//constants for velocity
 	const double xConstant = 0;
 	const double yConstant = 0;
+	
+	//other constants
 	const double gravityConstant = 0;
 	const int teleportDistance = 0;
 	const unsigned int timeBetweenTeleports = 0;
 
 	Momentum<double, double, double> playerMomentum;
-	bool isAlive = true;
-	bool hasFinished = false;
+	bool hasFinished = false; //has player finished the level
 	Uint32 lastTeleportTime = 0; //time of the last teleport
 
 
 
-protected:
 
-	const int PLAYER_HEIGHT = 0;
-	const int PLAYER_WIDTH = 0;
+	///function responsible for checking if player is inside any obstacle from the given vector
+	///parameters are: vector of obstacles to check
+	bool checkIfInsideAny(std::vector <GameObject*> myVector);
+
+	///function responsible for checking if player is inside an obstacle
+	///parameters are: obstacle to check
+	bool checkIfInsideOneObject(GameObject* obstacle);
+
+
+protected:
 
 	///contact in each direction
 	bool contact[4] = { 0 };
 
-public:
-	///function overriding abstract function from base class
-	void OverrideMe() {}
 
-	///enum indicating direction
-	enum Direction { UP, DOWN, LEFT, RIGHT };
-
-	///default constructor
-	Player();
-
-	///parametrised constructor
-	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y, gravity constant, distance covered by teleporting once and minimal time between teleports
-	Player(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
-		xConstant(xC),
-		yConstant(yC),
-		gravityConstant(g),
-		playerMomentum(gravityConstant),
-		PLAYER_WIDTH(w),
-		PLAYER_HEIGHT(h),
-		teleportDistance(tDist),
-		timeBetweenTeleports(tTime)
-	{
-		xCoordinate = x;
-		yCoordinate = y;
-		objectWidth = w;
-		objectHeight = h;
-	};
-
-	///destructor
-	virtual ~Player();
-
-	///function responsbile for calculating next position of the object based on previous position and speed
-	///parameters are: time between frames
-	void calculateNextPosition(const double timeDifference);
-
-	///function responsbile for printing the player onto the surface
-	///parameters are: renderer to print the player on
-	virtual void print(SDL_Renderer* rendererToPrintOn);
-
-	///function responsible for checking if player collided with an obstacle and reacting accordingly to whatever part hit the obstacle
-	///parameters are: obstacle to check
-	void checkCollision(Obstacle* obstacle);
-
-	///function responsible for checking if player's side collided with an obstacle
-	///parameters are: obstacle to check, side to check
-	bool checkCollisionSide(GameObject* obstacle, Direction dir);
-
-
-	///getters
-	double getXConstant() { return xConstant; }
-	double getYConstant() { return yConstant; }
-	Momentum<double, double, double>* getPlayerMomentum() { return &playerMomentum; }
-	int getPlayerHeight() { return PLAYER_HEIGHT; }
-	int getPlayerWidth() { return PLAYER_WIDTH; }
-	bool getIsAlive() { return isAlive; }
-	bool getHasFinished() { return hasFinished; }
-
-	///setters
-	void setPlayerMomentum(Momentum<double, double, double> newValue) { playerMomentum = newValue; }
-	void setIsAlive(bool newValue) { isAlive = newValue; }
-	void setHasFinished(bool newValue) { hasFinished = newValue; }
-
-
-
-protected:
 	///function responsible for jumping
 	void jump();
 
@@ -123,14 +66,74 @@ protected:
 
 
 
-private:
+public:
+	///function overriding abstract function from base class
+	void OverrideMe() {}
 
-	///function responsible for checking if player is inside any obstacle from the given vector
-	///parameters are: vector of obstacles to check
-	bool checkIfInsideAny(std::vector <GameObject*> myVector);
+	
+	///default constructor
+	Player() {}
 
-	///function responsible for checking if player is inside an obstacle
+	///parametrised constructor
+	///parameters are object's: x coordinate, y coordinate, height, width, constant of speed in x and in y, gravity constant, distance covered by teleporting once and minimal time between teleports
+	Player(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime):
+		xConstant(xC),
+		yConstant(yC),
+		gravityConstant(g),
+		playerMomentum(gravityConstant),		
+		teleportDistance(tDist),
+		timeBetweenTeleports(tTime)
+	{
+		xCoordinate = x;
+		yCoordinate = y;
+		objectWidth = w;
+		objectHeight = h;
+		color = std::make_tuple(0x00, 0x00, 0x00);
+	};
+
+
+	///destructor
+	virtual ~Player() {}
+
+
+	///function responsbile for calculating next position of the object based on previous position and speed
+	///parameters are: time between frames
+	void calculateNextPosition(const double timeDifference);
+
+	
+	
+	///function responsible for checking if player collided with an obstacle and reacting accordingly to whatever part hit the obstacle
 	///parameters are: obstacle to check
-	bool checkIfInsideOneObject(GameObject* obstacle);
+	void checkCollision(Obstacle* obstacle);
+
+	
+
+
+
+	//getters
+	
+	///getter for x constant of velocity
+	double getXConstant() { return xConstant; }
+	
+	///getter for y constant of velocity
+	double getYConstant() { return yConstant; }
+	
+	///getter for player's momentum
+	Momentum<double, double, double>* getPlayerMomentum() { return &playerMomentum; }
+	
+	///getter for hasFinished
+	bool getHasFinished() { return hasFinished; }
+
+
+
+	//setters
+
+	///setter for player momentum
+	void setPlayerMomentum(Momentum<double, double, double> newValue) { playerMomentum = newValue; }
+	
+	///setter for hasFinished
+	void setHasFinished(bool newValue) { hasFinished = newValue; }
+
+
 };
 

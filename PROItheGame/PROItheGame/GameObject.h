@@ -6,6 +6,11 @@
 
 #include <SDL.h>
 
+#include <tuple>
+#include <math.h>
+
+#include "Camera.h"
+
 
 
 class GameObject
@@ -20,16 +25,31 @@ protected:
 	int objectHeight;
 	int objectWidth;
 
+	//color of object
+	std::tuple<unsigned int, unsigned int, unsigned int> color;
+
+	//boolean determining whether or not this object is alive
+	bool isAlive = true;
+
+
 public:
 
 	///function ensures the class is abstract
 	virtual void OverrideMe() = 0;
 
+
+
+	///enum indicating direction
+	enum Direction { UP, DOWN, LEFT, RIGHT };
+
+
 	
 	///constructor
 	///parameters are: x and y coordinates, width and height of the object
-	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {};
+	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) 
+	{ color = std::make_tuple(0x00, 0x00, 0x00); }; ///color - black
 	
+
 
 	///destructor
 	virtual ~GameObject() {}
@@ -52,7 +72,8 @@ public:
 	///setter for object's width
 	void setObjectWidth(int newValue) { objectWidth = newValue; }
 
-	
+	///setter for isAlive
+	void setIsAlive(bool newValue) { isAlive = newValue; }
 	
 	
 
@@ -70,6 +91,39 @@ public:
 	///getter for object's width
 	int getObjectWidth() { return objectWidth; }
 
+	///getter for isAlive
+	bool getIsAlive() { return isAlive; }
 
+
+	
+
+	//methods to override
+
+	///function responsible for calculating next position of the object after givne time
+	///parameters are: time which passed since previous position
+	///function body is empty, since its made to be overridden
+	virtual void calculateNextPosition(const double timeDifference) {}
+
+
+	///function responsible for checking collision with another GameObject
+	///parameters are: pointer to another GameObject
+	///function body is empty, since its made to be overridden
+	virtual void checkCollision(GameObject* other) {}
+
+
+
+
+
+	//other
+
+	
+	///function responsible for checking if player's side collided with an obstacle
+	///parameters are: obstacle to check, side to check
+	bool checkCollisionSide(GameObject* obstacle, Direction dir);
+
+
+	///function responsible for printing the object onto the screen in relation to camera position
+	///parameters are: renderer to print on, camera to relate to
+	void print(SDL_Renderer* renderer, Camera* myCamera);
 };
 

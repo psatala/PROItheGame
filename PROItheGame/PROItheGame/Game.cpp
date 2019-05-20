@@ -497,10 +497,10 @@ void Game::playLevel(string pathToFile)
 		
 		//printing
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-			(**it).print(renderer, myPlayer);
+		//	(**it).print(renderer, myPlayer);
 		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-			(**jt).print(renderer, myPlayer);
-		myPlayer->print(renderer);
+		//	(**jt).print(renderer, myPlayer);
+		//myPlayer->print(renderer);
 
 
 

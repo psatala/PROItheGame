@@ -1,17 +1,13 @@
+///Name: HumanPlayer.cpp
+///Purpose: definition of methods from HumanPlayer class
+///Author: Piotr Satala
+
 #include "HumanPlayer.h"
 
 
 
-HumanPlayer::HumanPlayer()
-{
-	Player();
-}
 
-
-HumanPlayer::~HumanPlayer()
-{
-}
-
+	
 void HumanPlayer::applyInput(std::vector <GameObject*> myVector)
 {
 	//getting keyboard state

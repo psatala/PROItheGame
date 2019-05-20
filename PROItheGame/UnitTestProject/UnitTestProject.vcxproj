@@ -159,9 +159,9 @@
   <ItemGroup>
     <ClCompile Include="..\PROItheGame\Enemy.cpp" />
     <ClCompile Include="..\PROItheGame\Game.cpp" />
+    <ClCompile Include="..\PROItheGame\GameObject.cpp" />
     <ClCompile Include="..\PROItheGame\HumanPlayer.cpp" />
     <ClCompile Include="..\PROItheGame\MenuObject.cpp" />
-    <ClCompile Include="..\PROItheGame\Obstacle.cpp" />
     <ClCompile Include="..\PROItheGame\Player.cpp" />
     <ClCompile Include="UnitTestProject.cpp" />
   </ItemGroup>

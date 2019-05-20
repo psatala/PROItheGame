@@ -1,8 +1,13 @@
+///Name: Enemy.h
+///Purpose: declaration of Enemy class
+///Author: Piotr Satala
+
 #pragma once
 
 #include <string>
 
 #include "HumanPlayer.h"
+
 
 class Enemy :
 	public Player
@@ -50,9 +55,11 @@ class Enemy :
 
 
 public:
-	///unparametrised constructor
-	Enemy();
+
+	///default constructor
+	Enemy() {}
 	
+
 	///parametrised constructor
 	Enemy(int x, int y, int w, int h, double xC, double yC, double g, int tDist, int tTime, std::string behaviourType = ""):
 		Player(x, y, w, h, xC, yC, g, tDist, tTime) 
@@ -81,13 +88,11 @@ public:
 			ptrToBehaviourFunction = &Enemy::behaveNothing;
 	};
 
+	
+	
 	///destructor
-	virtual ~Enemy();
+	virtual ~Enemy() {}
 
-
-	///function responsbile for printing the enemy onto the surface in relation to the player
-	///parameters are: renderer to print the enemy on, player to whose position function relates
-	void print(SDL_Renderer* rendererToPrintOn, HumanPlayer* myPlayer);
 
 	
 	///function responsible for checking if enemy collided with a player and reacting accordingly to whatever part hit the player
