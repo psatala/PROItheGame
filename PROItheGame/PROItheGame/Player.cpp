@@ -21,6 +21,9 @@ bool Player::checkIfInsideAny(std::vector <GameObject*> myVector)
 
 bool Player::checkIfInsideOneObject(GameObject* obstacle)
 {
+	if (this == obstacle) return false; //not checking if the player is inside himself
+
+
 	return	xCoordinate + objectWidth > obstacle->getXCoordinate() && xCoordinate < obstacle->getXCoordinate() + obstacle->getObjectWidth()
 		&& yCoordinate + objectHeight > obstacle->getYCoordinate() && yCoordinate < obstacle->getYCoordinate() + obstacle->getObjectHeight();
 }

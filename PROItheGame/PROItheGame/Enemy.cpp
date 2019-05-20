@@ -72,6 +72,14 @@ void Enemy::behaveTeleportRIGHT()
 
 //other
 
+void Enemy::setColor()
+{
+	//set print color
+	color = std::make_tuple(0xFF, 0x00, 0x00);
+}
+
+
+
 void Enemy::checkCollision(HumanPlayer* myPlayer)
 {
 	if (!this->getIsAlive()) //quit if enemy's dead

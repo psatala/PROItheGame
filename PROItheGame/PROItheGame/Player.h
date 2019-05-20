@@ -88,12 +88,23 @@ public:
 		yCoordinate = y;
 		objectWidth = w;
 		objectHeight = h;
-		color = std::make_tuple(0x00, 0x00, 0x00);
 	};
 
 
 	///destructor
 	virtual ~Player() {}
+	
+	
+
+	///function responsible for setting the color to print in
+	virtual void setColor() {}
+
+
+	///function responsible for applying behaviour for the player
+	///parameters are: vector of all objects
+	///function body is empty, since its made to be overridden
+	virtual void applyBehaviour(std::vector <GameObject*> myVector) {}
+
 
 
 	///function responsbile for calculating next position of the object based on previous position and speed
@@ -108,7 +119,7 @@ public:
 
 	
 
-
+	
 
 	//getters
 	

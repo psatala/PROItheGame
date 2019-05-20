@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 
+#include <vector>
 #include <tuple>
 #include <math.h>
 
@@ -46,8 +47,7 @@ public:
 	
 	///constructor
 	///parameters are: x and y coordinates, width and height of the object
-	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) 
-	{ color = std::make_tuple(0x00, 0x00, 0x00); }; ///color - black
+	GameObject(int x = 0, int y = 0, int w = 0, int h = 0) : xCoordinate(x), yCoordinate(y), objectWidth(w), objectHeight(h) {}; 
 	
 
 
@@ -110,6 +110,16 @@ public:
 	///function body is empty, since its made to be overridden
 	virtual void checkCollision(GameObject* other) {}
 
+
+	///function responsible for setting the color to print in
+	///function body is empty, since its made to be overridden
+	virtual void setColor() {}
+
+
+	///function responsible for applying behaviour for the player
+	///parameters are: vector of all objects
+	///function body is empty, since its made to be overridden
+	virtual void applyBehaviour(std::vector <GameObject*> myVector) {}
 
 
 

@@ -34,22 +34,16 @@ public:
 		yCoordinate = y;
 		objectWidth = w;
 		objectHeight = h;
-
-		//set printing color
-		if(isItFinish)
-			color = std::make_tuple(0x00, 0x00, 0xFF);
-		else if(canItKill)
-			color = std::make_tuple(0xFF, 0xA5, 0x00);
-		else
-			color = std::make_tuple(0xFF, 0xFF, 0xFF);
-
 	};
 	
 
 	///destructor
 	~Obstacle() {}
 	
-	
+
+
+	///function responsible for setting the color to print in
+	virtual void setColor();
 
 
 

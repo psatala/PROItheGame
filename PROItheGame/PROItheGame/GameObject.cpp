@@ -8,6 +8,7 @@
 using namespace std;
 
 
+
 bool GameObject::checkCollisionSide(GameObject* obstacle, Direction dir)
 {
 
@@ -67,7 +68,8 @@ void GameObject::print(SDL_Renderer* renderer, Camera* myCamera)
 
 
 	//print
-	SDL_Rect objectRect = { RENDERER_HEIGHT/2 + objectMoveX , RENDERER_WIDTH/2 + objectMoveY, objectWidth, objectHeight };
+	SDL_Rect objectRect = { RENDERER_WIDTH/2 + objectMoveX , RENDERER_HEIGHT/2 + objectMoveY, objectWidth, objectHeight };
+	setColor();
 	SDL_SetRenderDrawColor(renderer, get<0>(color), get<1>(color), get<2>(color), 0xFF);
 	SDL_RenderFillRect(renderer, &objectRect);
 }

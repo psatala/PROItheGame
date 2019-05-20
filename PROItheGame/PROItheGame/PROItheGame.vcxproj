@@ -161,6 +161,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HumanPlayer.cpp" />
     <ClCompile Include="MenuObject.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PROItheGame.cpp" />
     <ClCompile Include="Enemy.cpp" />

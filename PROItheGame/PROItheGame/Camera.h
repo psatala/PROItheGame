@@ -13,6 +13,15 @@ class Camera
 
 public:
 
+	///constructor
+	///parameters are: x and y coordinates of camera
+	Camera(int x = 0, int y = 0): xCoordinate(x), yCoordinate(y) {}
+
+
+	///destructor
+	~Camera() {}
+
+
 	//setters
 
 	///setter for x

@@ -86,6 +86,9 @@ class Game
 	void playLevel(std::string pathToFile);
 
 
+	///function responsible for updating the game's camera
+	///parameters are: camera to update, human player to determine the camera
+	void updateCamera(Camera* myCamera, HumanPlayer* myPlayer);
 
 public:
 

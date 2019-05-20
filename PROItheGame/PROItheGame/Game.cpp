@@ -423,7 +423,9 @@ void Game::playLevel(string pathToFile)
 	vector <Obstacle*> myObstacles;
 	vector <Enemy*> myEnemies;
 
+	Camera* myCamera = new Camera;
 	
+
 	//load the level
 	try { loadLevel(pathToFile, &myPlayer, &myObstacles, &myEnemies); }
 	catch (const char* message) 
@@ -438,6 +440,7 @@ void Game::playLevel(string pathToFile)
 	vector<GameObject*> allObjects(myObstacles.begin(), myObstacles.end());
 	vector<GameObject*> auxiliaryVector(myEnemies.begin(), myEnemies.end());
 	allObjects.insert(allObjects.end(), auxiliaryVector.begin(), auxiliaryVector.end());
+	allObjects.push_back(myPlayer);
 
 
 	Uint32 startTime;
@@ -460,23 +463,43 @@ void Game::playLevel(string pathToFile)
 		}
 
 
-		//applying input for the player
-		myPlayer->applyInput(allObjects);
+		//applying input
+		for(vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
+			(**jt).applyBehaviour(allObjects);
+
+		/*//applying input for the player
+		myPlayer->applyBehaviour(allObjects);
 		
 		//applying behaviour for the enemies
 		for(vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-			(**jt).applyBehaviour();
+			(**jt).applyBehaviour(allObjects);
+		*/
+
 
 		//updating objects positions
-		myPlayer->calculateNextPosition(TIME_BETWEEN_FRAMES);
+		for (vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
+			(**jt).calculateNextPosition(TIME_BETWEEN_FRAMES);
+
+/*		myPlayer->calculateNextPosition(TIME_BETWEEN_FRAMES);
 		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
 			(**jt).calculateNextPosition(TIME_BETWEEN_FRAMES);
+	*/	
+
 		
-		
-		
+
 		//checking collisions
+		for (vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
+		{
+			for (vector<GameObject*>::iterator it = allObjects.begin(); it != allObjects.end(); ++it)
+			{
+				if (jt != it)
+				{
+					(**jt).checkCollision(*it);
+				}
+			}
+		}
 		
-		
+		/*
 		//player
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
 			myPlayer->checkCollision(*it);
@@ -488,8 +511,11 @@ void Game::playLevel(string pathToFile)
 			for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
 				(**jt).checkCollision(*it);
 			(**jt).checkCollision(myPlayer);
-		}
+		}*/
 		
+
+		//updating camera
+		updateCamera(myCamera, myPlayer);
 
 		
 		
@@ -497,14 +523,16 @@ void Game::playLevel(string pathToFile)
 		
 		//printing
 		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-		//	(**it).print(renderer, myPlayer);
+			(**it).print(renderer, myCamera);
 		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-		//	(**jt).print(renderer, myPlayer);
-		//myPlayer->print(renderer);
+			(**jt).print(renderer, myCamera);
+		myPlayer->print(renderer, myCamera);
 
 
 
 		SDL_RenderPresent(renderer);
+
+
 
 
 		//waiting for the next frame
@@ -546,6 +574,13 @@ void Game::playLevel(string pathToFile)
 }
 
 
+
+
+void Game::updateCamera(Camera* myCamera, HumanPlayer* myPlayer)
+{
+	myCamera->setXCoordinate((int)myPlayer->getXCoordinate() + myPlayer->getObjectWidth() / 2); //set new x
+	myCamera->setYCoordinate((int)myPlayer->getYCoordinate() + myPlayer->getObjectHeight() / 2); //set new y
+}
 
 
 

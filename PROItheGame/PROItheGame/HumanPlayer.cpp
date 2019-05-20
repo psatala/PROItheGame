@@ -7,8 +7,13 @@
 
 
 
+void HumanPlayer::setColor()
+{
+	color = std::make_tuple(0x00, 0xFF, 0x00);
+}
+
 	
-void HumanPlayer::applyInput(std::vector <GameObject*> myVector)
+void HumanPlayer::applyBehaviour(std::vector <GameObject*> myVector)
 {
 	//getting keyboard state
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);

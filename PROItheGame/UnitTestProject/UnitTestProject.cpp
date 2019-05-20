@@ -60,7 +60,7 @@ void testTeleportUP()
 
 
 	//act
-	myEnemy->applyBehaviour();
+	myEnemy->applyBehaviour(std::vector<GameObject*>());
 	
 	//assert
 	assert(myEnemy->getYCoordinate() == startingYPosition - teleportDistance);
@@ -87,7 +87,7 @@ void testTeleportDOWN()
 
 
 	//act
-	myEnemy->applyBehaviour();
+	myEnemy->applyBehaviour(std::vector<GameObject*>());
 
 	//assert
 	assert(myEnemy->getYCoordinate() == startingYPosition + teleportDistance);
@@ -114,7 +114,7 @@ void testTeleportLEFT()
 
 
 	//act
-	myEnemy->applyBehaviour();
+	myEnemy->applyBehaviour(std::vector<GameObject*>());
 
 	//assert
 	assert(myEnemy->getXCoordinate() == startingXPosition - teleportDistance);
@@ -141,7 +141,7 @@ void testTeleportRIGHT()
 
 
 	//act
-	myEnemy->applyBehaviour();
+	myEnemy->applyBehaviour(std::vector<GameObject*>());
 
 	//assert
 	assert(myEnemy->getXCoordinate() == startingXPosition + teleportDistance);

@@ -86,12 +86,19 @@ public:
 
 		else
 			ptrToBehaviourFunction = &Enemy::behaveNothing;
+
+		
 	};
 
 	
 	
 	///destructor
 	virtual ~Enemy() {}
+
+
+
+	///function responsible for setting the color to print in
+	virtual void setColor();
 
 
 	
@@ -105,7 +112,7 @@ public:
 
 	
 	///function responsible for handling the enemy behaviour
-	void applyBehaviour() { (this->*ptrToBehaviourFunction)(); }
+	void applyBehaviour(std::vector <GameObject*> myVector) { (this->*ptrToBehaviourFunction)(); }
 
 
 };
