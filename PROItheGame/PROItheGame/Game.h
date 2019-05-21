@@ -16,6 +16,7 @@
 #include "Macros.h"
 #include "Tree.h"
 #include "MenuObject.h"
+#include "GameArea.h"
 
 
 class Game
@@ -77,8 +78,8 @@ class Game
 
 
 	///function responsible for loading a level from a text file
-	///parameters are: path to the text file, double pointer to human player, pointer to vector of obstacles, pointer to vector of enemies
-	void loadLevel(std::string pathToFile, HumanPlayer **myPlayer, std::vector<Obstacle*>*myObstacles, std::vector<Enemy*>*myEnemies);
+	///parameters are: path to the text file, pointer to vector of objects, double pointer to player and game area
+	void loadLevel(std::string pathToFile, std::vector<GameObject*> *myObjects, HumanPlayer** myPlayer, GameArea** myGameArea);
 
 
 	///function responsible for allowing the user to play a level

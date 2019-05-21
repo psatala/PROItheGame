@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameArea.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="HumanPlayer.h" />
     <ClInclude Include="MenuObject.h" />

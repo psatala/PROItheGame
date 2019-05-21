@@ -162,12 +162,14 @@
     <ClCompile Include="..\PROItheGame\GameObject.cpp" />
     <ClCompile Include="..\PROItheGame\HumanPlayer.cpp" />
     <ClCompile Include="..\PROItheGame\MenuObject.cpp" />
+    <ClCompile Include="..\PROItheGame\Obstacle.cpp" />
     <ClCompile Include="..\PROItheGame\Player.cpp" />
     <ClCompile Include="UnitTestProject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PROItheGame\Enemy.h" />
     <ClInclude Include="..\PROItheGame\Game.h" />
+    <ClInclude Include="..\PROItheGame\GameArea.h" />
     <ClInclude Include="..\PROItheGame\GameObject.h" />
     <ClInclude Include="..\PROItheGame\HumanPlayer.h" />
     <ClInclude Include="..\PROItheGame\Macros.h" />

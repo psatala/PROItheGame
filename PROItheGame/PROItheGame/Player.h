@@ -39,7 +39,7 @@ class Player :
 
 	///function responsible for checking if player is inside an obstacle
 	///parameters are: obstacle to check
-	bool checkIfInsideOneObject(GameObject* obstacle);
+	bool checkIfInsideOneObject(GameObject* object);
 
 
 protected:

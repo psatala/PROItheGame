@@ -99,26 +99,20 @@ public:
 
 	//methods to override
 
-	///function responsible for calculating next position of the object after givne time
+	///function responsible for calculating next position of the object after given time
 	///parameters are: time which passed since previous position
-	///function body is empty, since its made to be overridden
+	///function body is empty, since it is made to be overridden
 	virtual void calculateNextPosition(const double timeDifference) {}
 
 
-	///function responsible for checking collision with another GameObject
-	///parameters are: pointer to another GameObject
-	///function body is empty, since its made to be overridden
-	virtual void checkCollision(GameObject* other) {}
-
-
 	///function responsible for setting the color to print in
-	///function body is empty, since its made to be overridden
+	///function body is empty, since it is made to be overridden
 	virtual void setColor() {}
 
 
 	///function responsible for applying behaviour for the player
 	///parameters are: vector of all objects
-	///function body is empty, since its made to be overridden
+	///function body is empty, since it is made to be overridden
 	virtual void applyBehaviour(std::vector <GameObject*> myVector) {}
 
 

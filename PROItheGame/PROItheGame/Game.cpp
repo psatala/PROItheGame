@@ -328,7 +328,7 @@ void Game::waitForKeypress()
 
 
 
-void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*>*myObstacles, vector<Enemy*>*myEnemies)
+void Game::loadLevel(string pathToFile, vector <GameObject*> *myObjects, HumanPlayer** myPlayer, GameArea** myGameArea)
 {
 
 	fstream myFile;
@@ -373,8 +373,11 @@ void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*
 				ySpeed /= TIME_BETWEEN_FRAMES;
 				gForce /= (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
 				
-				//creating object
-				*myPlayer = new HumanPlayer(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime);				
+				//creating human player
+				*myPlayer = new HumanPlayer(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime);
+				
+				//adding object to vector
+				myObjects->push_back(*myPlayer);
 				break;
 
 			case 'O': //obstacle
@@ -383,7 +386,7 @@ void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*
 				myFile >> canKill >> isFinish;
 
 				//adding object to vector
-				myObstacles->push_back(new Obstacle(xPos, yPos, width, height, canKill, isFinish));
+				myObjects->push_back(new Obstacle(xPos, yPos, width, height, canKill, isFinish));
 				break;
 
 			case 'E': //enemy
@@ -397,7 +400,11 @@ void Game::loadLevel(string pathToFile, HumanPlayer **myPlayer, vector<Obstacle*
 				gForce /= (TIME_BETWEEN_FRAMES * TIME_BETWEEN_FRAMES);
 				
 				//adding object to vector
-				myEnemies->push_back(new Enemy(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime, behaviourType));
+				myObjects->push_back(new Enemy(xPos, yPos, width, height, xSpeed, ySpeed, gForce, tDist, tTime, behaviourType));
+				break;
+
+			case 'G': //game area
+				*myGameArea = new GameArea(xPos, yPos, width, height);
 				break;
 
 			default:
@@ -419,15 +426,15 @@ void Game::playLevel(string pathToFile)
 	SDL_Event myEvent;
 
 
-	HumanPlayer* myPlayer;
-	vector <Obstacle*> myObstacles;
-	vector <Enemy*> myEnemies;
+	vector <GameObject*> myObjects; //vector containing enemies, obstacles and a human player
+	
+	HumanPlayer* myPlayer; //additional pointer to human player
 
 	Camera* myCamera = new Camera;
-	
+	GameArea* myGameArea;
 
 	//load the level
-	try { loadLevel(pathToFile, &myPlayer, &myObstacles, &myEnemies); }
+	try { loadLevel(pathToFile, &myObjects, &myPlayer, &myGameArea); }
 	catch (const char* message) 
 	{
 		cerr << message << endl;
@@ -435,12 +442,6 @@ void Game::playLevel(string pathToFile)
 	}
 
 
-	
-
-	vector<GameObject*> allObjects(myObstacles.begin(), myObstacles.end());
-	vector<GameObject*> auxiliaryVector(myEnemies.begin(), myEnemies.end());
-	allObjects.insert(allObjects.end(), auxiliaryVector.begin(), auxiliaryVector.end());
-	allObjects.push_back(myPlayer);
 
 
 	Uint32 startTime;
@@ -464,74 +465,72 @@ void Game::playLevel(string pathToFile)
 
 
 		//applying input
-		for(vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
-			(**jt).applyBehaviour(allObjects);
+		for(vector<GameObject*>::iterator jt = myObjects.begin(); jt != myObjects.end(); ++jt)
+			(**jt).applyBehaviour(myObjects);
 
-		/*//applying input for the player
-		myPlayer->applyBehaviour(allObjects);
-		
-		//applying behaviour for the enemies
-		for(vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-			(**jt).applyBehaviour(allObjects);
-		*/
+
 
 
 		//updating objects positions
-		for (vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
+		for (vector<GameObject*>::iterator jt = myObjects.begin(); jt != myObjects.end(); ++jt)
 			(**jt).calculateNextPosition(TIME_BETWEEN_FRAMES);
 
-/*		myPlayer->calculateNextPosition(TIME_BETWEEN_FRAMES);
-		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-			(**jt).calculateNextPosition(TIME_BETWEEN_FRAMES);
-	*/	
+
 
 		
 
 		//checking collisions
-		for (vector<GameObject*>::iterator jt = allObjects.begin(); jt != allObjects.end(); ++jt)
+		for (vector<GameObject*>::iterator jt = myObjects.begin(); jt != myObjects.end(); ++jt)
 		{
-			for (vector<GameObject*>::iterator it = allObjects.begin(); it != allObjects.end(); ++it)
+			for (vector<GameObject*>::iterator it = myObjects.begin(); it != myObjects.end(); ++it)
 			{
 				if (jt != it)
 				{
-					(**jt).checkCollision(*it);
+
+					//handling player - obstacle collisions
+					Player* temporary1 = dynamic_cast<Player*>(*jt);
+					Obstacle* temporary2 = dynamic_cast<Obstacle*>(*it);
+					if (temporary1 && temporary2)
+						temporary1->checkCollision(temporary2);
+					
+					//handling enemy - human player collisions
+					Enemy* temporary3 = dynamic_cast<Enemy*>(*jt);
+					HumanPlayer* temporary4 = dynamic_cast<HumanPlayer*>(*it);
+					if (temporary3 && temporary4)
+						temporary3->checkCollision(temporary4);
+
 				}
 			}
 		}
 		
-		/*
-		//player
-		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-			myPlayer->checkCollision(*it);
-		
-		
-		//enemies
-		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
-		{
-			for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-				(**jt).checkCollision(*it);
-			(**jt).checkCollision(myPlayer);
-		}*/
+
 		
 
 		//updating camera
 		updateCamera(myCamera, myPlayer);
 
 		
-		
+
+
+		//printing
 		clear();
 		
-		//printing
-		for (vector<Obstacle*>::iterator it = myObstacles.begin(); it != myObstacles.end(); ++it)
-			(**it).print(renderer, myCamera);
-		for (vector <Enemy*>::iterator jt = myEnemies.begin(); jt != myEnemies.end(); ++jt)
+		for (vector<GameObject*>::iterator jt = myObjects.begin(); jt != myObjects.end(); ++jt)
 			(**jt).print(renderer, myCamera);
-		myPlayer->print(renderer, myCamera);
-
-
-
+		
 		SDL_RenderPresent(renderer);
 
+
+
+		//checking if player is in desired area
+		try{ myGameArea->checkIfInside(myPlayer); }
+		catch (const char* message)
+		{
+			cerr << message << endl;
+			quit = true;
+			waitForKeypress();
+		}
+		
 
 
 
@@ -543,31 +542,37 @@ void Game::playLevel(string pathToFile)
 	}
 
 
-	if (myPlayer->getHasFinished())
-		printText("Level Completed", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, { 0xFF, 0xFF, 0x00 });
-
-	else if(!myPlayer->getIsAlive())
-		printText("Game Over", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, { 0xFF, 0xFF, 0x00 });
 	
-	waitForKeypress();
 
 
+	//user has won
+	if (myPlayer->getHasFinished())
+	{
+		printText("LEVEL", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT / 2 }, { 0xFF, 0xFF, 0x00 });
+		printText("COMPLETED", { 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2 }, { 0xFF, 0xFF, 0x00 });
+		waitForKeypress();
+	}
+		
+
+
+	//user has lost
+	else if (!myPlayer->getIsAlive())
+	{
+		printText("GAME OVER", { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT }, { 0xFF, 0xFF, 0x00 });
+		waitForKeypress();
+	}
+		
+	
+	
 
 	//freeing memory
-	delete myPlayer;
+	delete myCamera;
 
-	//free vector of enemies
-	while (!myEnemies.empty())
+	//free vector of objects
+	while (!myObjects.empty())
 	{
-		delete myEnemies.back();
-		myEnemies.pop_back();
-	}
-
-	//free vector of obstacles
-	while (!myObstacles.empty())
-	{
-		delete myObstacles.back();
-		myObstacles.pop_back();
+		delete myObjects.back();
+		myObjects.pop_back();
 	}
 
 

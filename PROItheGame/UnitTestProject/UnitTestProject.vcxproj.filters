@@ -36,6 +36,9 @@
     <ClCompile Include="..\PROItheGame\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\PROItheGame\Obstacle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\PROItheGame\Enemy.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\PROItheGame\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PROItheGame\GameArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
