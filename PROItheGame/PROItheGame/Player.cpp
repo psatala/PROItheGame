@@ -6,7 +6,6 @@
 
 
 
-
 //private methods
 
 bool Player::checkIfInsideAny(std::vector <GameObject*> myVector)

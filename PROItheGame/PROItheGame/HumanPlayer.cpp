@@ -6,6 +6,10 @@
 
 
 
+//initialization of class Player static member 
+int HumanPlayer::count = 0;
+
+
 
 void HumanPlayer::setColor()
 {

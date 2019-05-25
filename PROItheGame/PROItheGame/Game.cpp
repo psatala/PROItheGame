@@ -73,15 +73,29 @@ void Game::buildMenuTree()
 	myMenu->goTo(0); //go to "Play"
 
 	//level type choice menu
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "EASY LEVELS"));
 	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS"));
 
-	myMenu->goTo(0); //go to "Dev Levels"
+
+
+	myMenu->goTo(0); //go to "Easy Levels"
+
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1.1", ID_EASY_LEVEL_1));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1.2", ID_EASY_LEVEL_2));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1.3", ID_EASY_LEVEL_3));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1.4", ID_EASY_LEVEL_4));
+
+	myMenu->goTo(-1); //go back
+
+	
+	
+	myMenu->goTo(1); //go to "Dev Levels"
 
 	//level choice menu
-	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1", ID_LEVEL_1));
-	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2", ID_LEVEL_2));
-	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3", ID_LEVEL_3));
-	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4", ID_LEVEL_4));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 0.1", ID_DEV_LEVEL_1));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 0.2", ID_DEV_LEVEL_2));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 0.3", ID_DEV_LEVEL_3));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 0.4", ID_DEV_LEVEL_4));
 
 	//go back
 	myMenu->goTo(-1);
@@ -198,22 +212,46 @@ void Game::handleMenuChoice(int functionID)
 	switch (functionID)
 	{
 
-	case ID_LEVEL_1:
+		//easy levels
+	case ID_EASY_LEVEL_1:
+		playLevel("Levels/EasyLevel01.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_EASY_LEVEL_2:
+		playLevel("Levels/EasyLevel02.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_EASY_LEVEL_3:
+		playLevel("Levels/EasyLevel03.txt");
+		myMenu->goTo(-1);
+		break;
+
+	case ID_EASY_LEVEL_4:
+		playLevel("Levels/EasyLevel04.txt");
+		myMenu->goTo(-1);
+		break;
+
+
+
+		//dev levels
+	case ID_DEV_LEVEL_1:
 		playLevel("Levels/Level01.txt");
 		myMenu->goTo(-1);
 		break;
 	
-	case ID_LEVEL_2:
+	case ID_DEV_LEVEL_2:
 		playLevel("Levels/Level02.txt");
 		myMenu->goTo(-1);
 		break;
 
-	case ID_LEVEL_3:
+	case ID_DEV_LEVEL_3:
 		playLevel("Levels/Level03.txt");
 		myMenu->goTo(-1);
 		break;
 
-	case ID_LEVEL_4:
+	case ID_DEV_LEVEL_4:
 		playLevel("Levels/Level04.txt");
 		myMenu->goTo(-1);
 		break;
@@ -223,6 +261,8 @@ void Game::handleMenuChoice(int functionID)
 		myMenu->goTo(-1);
 		break;
 
+
+		//other
 	default:
 		break;
 	}
@@ -345,6 +385,11 @@ void Game::loadLevel(string pathToFile, vector <GameObject*> *myObjects, HumanPl
 		unsigned int tTime;
 		string behaviourType;
 
+		if (HumanPlayer::getCount() != 0)
+			throw "HumanPlayer instances from previous level have not been deleted!";
+		if (GameArea::getCount() != 0)
+			throw "GameArea instances from previous level have not been deleted!";
+
 		while (!myFile.eof())
 		{
 			
@@ -403,6 +448,12 @@ void Game::loadLevel(string pathToFile, vector <GameObject*> *myObjects, HumanPl
 			}
 		}
 		myFile.close();
+
+
+		if (HumanPlayer::getCount() != 1)
+			throw "Incorrect number of HumanPlayer instances!";
+		if (GameArea::getCount() != 1)
+			throw "Incorrect number of GameArea instances!";
 	}
 }
 
@@ -557,6 +608,7 @@ void Game::playLevel(string pathToFile)
 
 	//freeing memory
 	delete myCamera;
+	delete myGameArea;
 
 	//free vector of objects
 	while (!myObjects.empty())

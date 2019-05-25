@@ -23,7 +23,7 @@ int main()
 
 
 	const int MENU_ELEMENT_HEIGHT = 50;
-	const int MENU_ELEMENT_WIDTH = 100;
+	const int MENU_ELEMENT_WIDTH = 120;
 
 
 	//init
