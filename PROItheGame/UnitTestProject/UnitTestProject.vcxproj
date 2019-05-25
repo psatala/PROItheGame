@@ -164,6 +164,7 @@
     <ClCompile Include="..\PROItheGame\MenuObject.cpp" />
     <ClCompile Include="..\PROItheGame\Obstacle.cpp" />
     <ClCompile Include="..\PROItheGame\Player.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="UnitTestProject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="..\PROItheGame\Player.h" />
     <ClInclude Include="..\PROItheGame\Tree.h" />
     <ClInclude Include="..\PROItheGame\TreeElement.h" />
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

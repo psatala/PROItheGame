@@ -38,7 +38,7 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 	//equation for determining x coordinate
 	objectRect.x = (RENDERER_WIDTH - objectRect.w) / 2;	
 	//equation for determining y coordinate based on how many elements are in this part of the menu and the index of this element
-	objectRect.y = (double)RENDERER_HEIGHT / 2 + 2 * (double)objectRect.h * ((double)elementIndex - (double)elementCount / 2);
+	objectRect.y = (int)((double)RENDERER_HEIGHT / 2 + 2 * (double)objectRect.h * ((double)elementIndex - (double)elementCount / 2));
 
 
 	//applying

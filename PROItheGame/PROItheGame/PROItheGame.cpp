@@ -1,3 +1,7 @@
+///Name: PROItheGame.cpp
+///Purpose: file containing main function for this project
+///Author: Piotr Satala
+
 #include <SDL.h>
 #undef main
 
@@ -10,6 +14,7 @@ using namespace std;
 
 int main()
 {
+	//constants
 	const double FPS = 60;
 	const double TIME_BETWEEN_FRAMES = 1000 / FPS;
 
@@ -21,8 +26,10 @@ int main()
 	const int MENU_ELEMENT_WIDTH = 100;
 
 
+	//init
 	Game myGame(SCREEN_HEIGHT, SCREEN_WIDTH, MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, TIME_BETWEEN_FRAMES);
 
+	//play
 	myGame.simulateMenu();
 
 
