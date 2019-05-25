@@ -13,11 +13,14 @@
 
 
 
-class MenuObject :
-	public GameObject
+class MenuObject
 {
+	SDL_Rect objectRect; //rectangle indicating position of the object
+
 	std::string text; //text to be printed
 	
+	int returnValue = -1; //value to return when chosen
+
 	const int scaleTextLengthBy = 20; //constant to scale the text
 
 public:
@@ -28,8 +31,8 @@ public:
 
 
 	///constructor
-	///parameters are: height, width and text of menu object
-	MenuObject(int h = 0, int w = 0, std::string t = "");
+	///parameters are: height, width, text of menu object and its return value
+	MenuObject(int h = 0, int w = 0, std::string t = "", int returnVal = -1);
 
 
 
@@ -48,6 +51,12 @@ public:
 	///function responsible for checking if user clicked the object
 	///parameters are: x and y coordinates of a click
 	bool checkIfClicked(int xMouse, int yMouse);
+
+
+
+	///function responsible for getting the return value of element
+	///function returns the return value of the element
+	int returnHere();
 
 };
 

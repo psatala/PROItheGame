@@ -10,7 +10,6 @@
 template <class T>
 class TreeElement
 {
-	const int returnValue = -1; //return value of element
 	
 public:
 
@@ -24,17 +23,15 @@ public:
 	
 	//constructing
 
-	///default constructor
-	TreeElement();
-
-	///parametrised constructor
-	///paramters are: pointer to an object element will be containing, return value of the element
-	TreeElement(T* objectToPointTo = NULL, int valueToReturn = -1) :
-		returnValue(valueToReturn),
+	///constructor
+	///paramters are: pointer to an object element will be containing
+	TreeElement(T* objectToPointTo = NULL) :
 		ptrToFather(this),
 		ptrToObject(objectToPointTo) {}
 
-
+	///copy constructor
+	///constructing copies is not allowed
+	TreeElement(const TreeElement<T>& other) = delete;
 
 
 	
@@ -43,24 +40,15 @@ public:
 	///destructor
 	~TreeElement();
 
-	
-	
-	//returning from menu
 
-	///function responsible for getting the return value of element
-	///function returns the return value of the element
-	const int returnHere();
+	//operators
+
+	///copy assignment operator
+	///making copies is not allowed
+	TreeElement<T>& operator=(const TreeElement<T>& other) = delete;
 
 };
 
-
-
-
-template <class T>
-TreeElement<T>::TreeElement()
-{
-	ptrToFather = this; //set element's father to be the element
-}
 
 
 
@@ -69,6 +57,7 @@ TreeElement<T>::~TreeElement()
 {
 	//free memory
 	delete ptrToObject;
+	ptrToObject = 0;
 
 	//clear vector
 	while (!listOfSons.empty())
@@ -77,12 +66,4 @@ TreeElement<T>::~TreeElement()
 
 
 
-template <class T>
-const int TreeElement<T>::returnHere()
-{
-	if (!listOfSons.empty())
-		return -1; //cannot return here
-	else
-		return returnValue;
-}
 

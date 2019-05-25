@@ -24,9 +24,7 @@ class Game
 	SDL_Window* window;  //window to render to
 	SDL_Renderer* renderer; //renderer to print on
 
-
-	Tree<MenuObject>* myMenu; //menu structure
-	TreeElement<MenuObject>* menuRoot; //menu root
+	Tree<MenuObject>* myMenu = new Tree<MenuObject>(); //menu structure
 
 	
 	const double TIME_BETWEEN_FRAMES = 0;
@@ -44,10 +42,6 @@ class Game
 	///parameters are: height of the screen, width of the screen
 	///function returns wether or not the initialization was succcessful
 	bool init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH);
-
-
-	///function responsible for initialising menu
-	void initMenu();
 
 
 	///function responsible for building menu tree
@@ -106,7 +100,6 @@ public:
 	{
 		if (!init(screenHeight, screenWidth))
 			throw "Initialization unsuccessful";
-		initMenu();
 		buildMenuTree();
 	}
 

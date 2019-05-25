@@ -152,6 +152,9 @@ void testTeleportRIGHT()
 }
 
 
+
+
+
 int main()
 {
 	//main function calling all test functions

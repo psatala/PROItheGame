@@ -59,16 +59,6 @@ bool Game::init(const int SCREEN_HEIGHT, const int SCREEN_WIDTH)
 
 
 
-void Game::initMenu()
-{
-	menuRoot = new TreeElement<MenuObject>(new MenuObject()); //initializing first element of the tree
-
-	myMenu = new Tree<MenuObject>(menuRoot); //initializing tree
-
-}
-
-
-
 
 
 void Game::buildMenuTree()
@@ -76,22 +66,22 @@ void Game::buildMenuTree()
 
 
 	//main menu
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY")));
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS")));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "PLAY"));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "OPTIONS"));
 
 
 	myMenu->goTo(0); //go to "Play"
 
 	//level type choice menu
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS")));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "DEV LEVELS"));
 
 	myMenu->goTo(0); //go to "Dev Levels"
 
 	//level choice menu
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1"), ID_LEVEL_1));
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2"), ID_LEVEL_2));
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3"), ID_LEVEL_3));
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4"), ID_LEVEL_4));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 1", ID_LEVEL_1));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 2", ID_LEVEL_2));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 3", ID_LEVEL_3));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "LEVEL 4", ID_LEVEL_4));
 
 	//go back
 	myMenu->goTo(-1);
@@ -101,7 +91,7 @@ void Game::buildMenuTree()
 	myMenu->goTo(1); //go to "Options"
 
 	//options menu
-	myMenu->add(new TreeElement<MenuObject>(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "CONTROLS"), ID_CONTROLS));
+	myMenu->add(new MenuObject(MENU_ELEMENT_HEIGHT, MENU_ELEMENT_WIDTH, "CONTROLS", ID_CONTROLS));
 
 	myMenu->goTo(-1); //go back
 
@@ -171,7 +161,7 @@ void Game::simulateMenu()
 				{
 					myMenu->goTo(indexOfClicked);
 
-					handleMenuChoice(myMenu->tryReturning()); //try to call a function
+					handleMenuChoice(myMenu->ptrToCurrentElement->ptrToObject->returnHere()); //try to call a function
 					
 					clear();
 					updateMenu();

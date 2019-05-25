@@ -8,18 +8,21 @@
 
 
 
-MenuObject::MenuObject(int h, int w, std::string t)
+MenuObject::MenuObject(int h, int w, std::string t, int returnVal)
 {
-	objectHeight = h;
-	objectWidth = w;
+	objectRect.h = h;
+	objectRect.w = w;
 	text = t;
+	returnValue = returnVal;
 }
+
 
 
 
 MenuObject::~MenuObject()
 {
 }
+
 
 
 void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int elementCount)
@@ -31,12 +34,15 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 	int RENDERER_WIDTH;
 	SDL_GetRendererOutputSize(rendererToPrintOn, &RENDERER_WIDTH, &RENDERER_HEIGHT);
 
-	//calculating x and y coordinates
-	xCoordinate = (RENDERER_WIDTH - objectWidth) / 2;
-	yCoordinate = (double)RENDERER_HEIGHT / 2 + 2 * (double)objectHeight * ((double)elementIndex - (double)elementCount / 2);
+
+	//equation for determining x coordinate
+	objectRect.x = (RENDERER_WIDTH - objectRect.w) / 2;	
+	//equation for determining y coordinate based on how many elements are in this part of the menu and the index of this element
+	objectRect.y = (double)RENDERER_HEIGHT / 2 + 2 * (double)objectRect.h * ((double)elementIndex - (double)elementCount / 2);
+
 
 	//applying
-	SDL_Rect myRect = { (int)xCoordinate, (int)yCoordinate, objectWidth, objectHeight};
+	SDL_Rect myRect = { objectRect.x, objectRect.y, objectRect.w, objectRect.h};
 	SDL_SetRenderDrawColor(rendererToPrintOn, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderFillRect(rendererToPrintOn, &myRect);
 	
@@ -47,7 +53,7 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 	SDL_Color Black = { 0, 0, 0};
 	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(myFont, text.c_str(), Black);
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(rendererToPrintOn, surfaceMessage);
-	SDL_Rect innerRect = { (int)xCoordinate + objectWidth /2 - newWidth / 4, (int)yCoordinate + objectHeight / 4, newWidth / 2, objectHeight / 2 };
+	SDL_Rect innerRect = { objectRect.x + objectRect.w /2 - newWidth / 4, objectRect.y + objectRect.h / 4, newWidth / 2, objectRect.h / 2 };
 	SDL_RenderCopy(rendererToPrintOn, Message, NULL, &innerRect);
 	
 	SDL_DestroyTexture(Message);
@@ -62,8 +68,16 @@ void MenuObject::print(SDL_Renderer* rendererToPrintOn, int elementIndex, int el
 
 
 
+
 bool MenuObject::checkIfClicked(int xMouse, int yMouse)
 {
-	return xCoordinate < xMouse && xCoordinate + objectWidth > xMouse     //check x coordinate
-		&& yCoordinate < yMouse && yCoordinate + objectHeight > yMouse;   //check y coordinate
+	return objectRect.x < xMouse && objectRect.x + objectRect.w > xMouse     //check x coordinate
+		&& objectRect.y < yMouse && objectRect.y + objectRect.h > yMouse;   //check y coordinate
+}
+
+
+
+int MenuObject::returnHere()
+{
+	return returnValue;
 }
